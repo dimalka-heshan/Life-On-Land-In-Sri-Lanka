@@ -2,25 +2,27 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-function AddForestPage(props) {
+function AdminAddPlantPage(props) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
       <View style={styles.frame61}>
               <Text style={styles.pitcherPlantInSriLanka}>
-                Add New Forest
+                Add New Plant
               </Text>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox4]}>
             <TextInput
-                placeholder="Enter Forest Name"
+                placeholder="Enter Plant Name"
                 style={styles.inputStyle}
             ></TextInput>
         </View>
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox5]}>
             <TextInput
-                placeholder="Explanation of the Forest"
+                placeholder="Explanation of the Plant"
+                multiline={true}
+                numberOfLines={10}
                 style={styles.inputStyle1}
             ></TextInput>
         </View>
@@ -32,7 +34,7 @@ function AddForestPage(props) {
             ></TextInput>
         </View>
         <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet1]}>
-            <Text style={styles.publish}>Add</Text>
+            <Text style={styles.publish}>Publish</Text>
         </TouchableOpacity>
         <Icon name="plus-circle" style={styles.icon1}></Icon>
       </View>
@@ -201,6 +203,7 @@ const styles = StyleSheet.create({
     paddingLeft: 22,
     fontSize: 16,
     alignSelf: "flex-start",
+    textAlignVertical: "top",
     flex: 1,
     lineHeight: 16,
     paddingTop: 8,
@@ -231,4 +234,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddForestPage;
+export default AdminAddPlantPage;

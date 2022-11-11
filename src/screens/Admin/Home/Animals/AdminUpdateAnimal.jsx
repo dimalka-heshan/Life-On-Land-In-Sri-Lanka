@@ -2,25 +2,27 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-function AddPlantPage(props) {
+function AdminUpdateAnimal(props) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
       <View style={styles.frame61}>
               <Text style={styles.pitcherPlantInSriLanka}>
-                Add New Plant
+                Update Animal
               </Text>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox4]}>
             <TextInput
-                placeholder="Enter Plant Name"
+                placeholder="Animal Name"
                 style={styles.inputStyle}
             ></TextInput>
         </View>
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox5]}>
             <TextInput
-                placeholder="Explanation of the Plant"
+                placeholder="Explanation of the Animal"
+                multiline={true}
+                numberOfLines={10}
                 style={styles.inputStyle1}
             ></TextInput>
         </View>
@@ -92,7 +94,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "rgba(0,0,0,1)",
     fontSize: 18,
-    fontFamily: "lexend-600",
     marginTop: 22,
     marginLeft: 16
   },
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     marginTop: -25,
   },
   backgroundStack: {
+    backgroundColor: "white",
     flex: 1
   },
 
@@ -175,7 +177,6 @@ const styles = StyleSheet.create({
   publish: {
     color: "rgba(255,255,255,1)",
     fontSize: 18,
-    fontFamily: "roboto-700"
   },
   containertxt: {
     borderBottomWidth: 1,
@@ -201,6 +202,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 22,
     fontSize: 16,
+    textAlignVertical: "top",
     alignSelf: "flex-start",
     flex: 1,
     lineHeight: 16,
@@ -232,4 +234,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddPlantPage;
+export default AdminUpdateAnimal;

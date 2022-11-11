@@ -16,10 +16,11 @@ function AdminHomePage({navigation}) {
             contentContainerStyle={styles.scrollArea_contentContainerStyle}
           >
             <View style={styles.groupRow}>
+              <TouchableOpacity onPress={() => navigation.navigate('AdminForestDetails')}>
               <View style={styles.group}>
                 <View style={styles.rect}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image1}
                   ></Image>
@@ -38,10 +39,11 @@ function AdminHomePage({navigation}) {
                   </View>
                 </View>
               </View>
+              </TouchableOpacity>
               <View style={styles.group1}>
                 <View style={styles.rect1}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image2}
                   ></Image>

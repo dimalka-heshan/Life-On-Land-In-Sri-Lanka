@@ -7,9 +7,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createMaterialBottomTabNavigator();
 
-import AdminHomePage from "../screens/Admin/Home/AdminHomePage";
-import AddForestPage from "../screens/Admin/Home/AddForestPage";
-import UpdateForest from "../screens/Admin/Home/UpdateForest";
+import AdminHomePage from "../screens/Admin/Home/Forests/AdminHomePage";
+import AddForestPage from "../screens/Admin/Home/Forests/AddForestPage";
+import UpdateForest from "../screens/Admin/Home/Forests/UpdateForest";
+import AdminForestDetails from '../screens/Admin/Home/Forests/AdminForestDetails';
+import AdminAddAnimalPage from '../screens/Admin/Home/Animals/AdminAddAnimalPage';
+import AdminAddPlantPage from '../screens/Admin/Home/Plants/AdminAddPlantPage';
+import AdminAnimalDetails from '../screens/Admin/Home/Animals/AdminAnimalDetails';
+import AdminPlantsDetails from '../screens/Admin/Home/Plants/AdminPlantsDetails';
+import AdminUpdateAnimal from '../screens/Admin/Home/Animals/AdminUpdateAnimal';
+import AdminUpdatePlant from '../screens/Admin/Home/Plants/AdminUpdatePlant';
+import AdminPlantsApprovalList from '../screens/Admin/Home/Plants/AdminPlantsApprovalList';
+import AdminAnimalApprovalList from '../screens/Admin/Home/Animals/AdminAnimalApprovalList';
+import AdminsAnimalsApproval from '../screens/Admin/Home/Animals/AdminsAnimalsApproval';
+import AdminsPlantApproval from '../screens/Admin/Home/Plants/AdminsPlantApproval';
 
 import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
 import AdminProfile from "../screens/Admin/Profile/AdminProfile";
@@ -38,6 +49,83 @@ function HomeStackScreen() {
      <HomeStack.Screen 
         name="UpdateForest" 
         component={UpdateForest}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminForestDetails" 
+        component={AdminForestDetails}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAddAnimalPage" 
+        component={AdminAddAnimalPage}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAddPlantPage" 
+        component={AdminAddPlantPage}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAnimalDetails" 
+        component={AdminAnimalDetails}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminPlantsDetails" 
+        component={AdminPlantsDetails}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminUpdateAnimal" 
+        component={AdminUpdateAnimal}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminUpdatePlant" 
+        component={AdminUpdatePlant}
+        options={{
+          headerShown: false,
+      }} 
+     />
+      <HomeStack.Screen 
+        name="AdminPlantsApprovalList" 
+        component={AdminPlantsApprovalList}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAnimalApprovalList" 
+        component={AdminAnimalApprovalList}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminsAnimalsApproval" 
+        component={AdminsAnimalsApproval}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminsPlantApproval" 
+        component={AdminsPlantApproval}
         options={{
           headerShown: false,
       }} 

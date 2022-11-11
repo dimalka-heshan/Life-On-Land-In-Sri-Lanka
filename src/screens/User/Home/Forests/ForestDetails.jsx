@@ -99,7 +99,7 @@ function ForestDetails({navigation}) {
             </View>
             <Text style={styles.loremIpsum2}>Sinharaja Rain Forest</Text>
             <Image
-            source={require("../../../assets/images/461931-landscape-samurai1.jpg")}
+            source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
             resizeMode="contain"
             style={styles.imagefrst}
             ></Image>
@@ -117,7 +117,7 @@ function ForestDetails({navigation}) {
               <View style={styles.group1}>
                 <View style={styles.rect2}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image1}
                   ></Image>
@@ -128,7 +128,7 @@ function ForestDetails({navigation}) {
               <View style={styles.group2}>
                 <View style={styles.rect3}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image2}
                   ></Image>
@@ -139,7 +139,7 @@ function ForestDetails({navigation}) {
             <View style={styles.group3}>
               <View style={styles.rect4}>
                 <Image
-                  source={require("../../../assets/images/4ss1.jpg")}
+                  source={require("../../../../assets/images/4ss1.jpg")}
                   resizeMode="contain"
                   style={styles.image3}
                 ></Image>
@@ -165,7 +165,7 @@ function ForestDetails({navigation}) {
               <View style={styles.group1}>
                 <View style={styles.rect2}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image1}
                   ></Image>
@@ -176,7 +176,7 @@ function ForestDetails({navigation}) {
               <View style={styles.group2}>
                 <View style={styles.rect3}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image2}
                   ></Image>
@@ -187,7 +187,7 @@ function ForestDetails({navigation}) {
             <View style={styles.group3}>
               <View style={styles.rect4}>
                 <Image
-                  source={require("../../../assets/images/4ss1.jpg")}
+                  source={require("../../../../assets/images/4ss1.jpg")}
                   resizeMode="contain"
                   style={styles.image3}
                 ></Image>
@@ -197,7 +197,7 @@ function ForestDetails({navigation}) {
           </ScrollView>
         </View>
         <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AddAnimalPage')}>
-            <Text style={styles.addNewAnimals}>Add new Animals</Text>
+            <Text style={styles.addNewAnimals}>Add New Animal Species</Text>
         </TouchableOpacity>
         </View>
     }
@@ -267,7 +267,6 @@ const styles = StyleSheet.create({
     borderRadius: 38
   },
   backgroundStack: {
-    backgroundColor: "white",
     width: 414,
     height: 896
   },
@@ -478,7 +477,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(34,139,34,1)"
   },
   backgroundStack: {
-    backgroundColor: "white",
     width: 415,
     height: 897
   }

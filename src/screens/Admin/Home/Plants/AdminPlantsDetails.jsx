@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 import Svg, { Path, Defs, Mask } from "react-native-svg";
 
-function PlantsDetails(props) {
+function AdminPlantsDetails(props) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
@@ -12,7 +12,7 @@ function PlantsDetails(props) {
               </Text>
             </View>
         <Image
-          source={require("../../../assets/images/461931-landscape-samurai1.jpg")}
+          source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
           resizeMode="contain"
           style={styles.image}
         ></Image>
@@ -158,9 +158,10 @@ const styles = StyleSheet.create({
     marginLeft: 18
   },
   backgroundStack: {
+    backgroundColor: "white",
     width: 414,
     height: 896
   }
 });
 
-export default PlantsDetails;
+export default AdminPlantsDetails;

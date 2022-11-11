@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image } from "react-native";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function ForestDetails({navigation}) {
+function AdminForestDetails({navigation}) {
 
     const [active1, setActive1] = useState(false);
     const [active2, setActive2] = useState(true);
@@ -99,7 +101,7 @@ function ForestDetails({navigation}) {
             </View>
             <Text style={styles.loremIpsum2}>Sinharaja Rain Forest</Text>
             <Image
-            source={require("../../../assets/images/461931-landscape-samurai1.jpg")}
+            source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
             resizeMode="contain"
             style={styles.imagefrst}
             ></Image>
@@ -113,22 +115,34 @@ function ForestDetails({navigation}) {
             contentContainerStyle={styles.scrollArea1_contentContainerStyle}
           >
             <View style={styles.group1Row}>
-            <TouchableOpacity onPress={() => navigation.navigate('PlantsDetails')}>
+            <TouchableOpacity onPress={() => navigation.navigate('AdminPlantsDetails')}>
               <View style={styles.group1}>
                 <View style={styles.rect2}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image1}
                   ></Image>
                   <Text style={styles.kariPlants1}>Kari Plants</Text>
+                  <View style={styles.icon1Row}>
+                  <TouchableOpacity onPress={() => navigation.navigate('AdminUpdatePlant')}>
+                    <FontAwesomeIcon
+                      name="edit"
+                      style={styles.icon1}
+                    ></FontAwesomeIcon>
+                    </TouchableOpacity>
+                    <MaterialCommunityIconsIcon
+                      name="delete"
+                      style={styles.icon2}
+                    ></MaterialCommunityIconsIcon>
+                  </View>
                 </View>
               </View>
               </TouchableOpacity>
               <View style={styles.group2}>
                 <View style={styles.rect3}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image2}
                   ></Image>
@@ -139,7 +153,7 @@ function ForestDetails({navigation}) {
             <View style={styles.group3}>
               <View style={styles.rect4}>
                 <Image
-                  source={require("../../../assets/images/4ss1.jpg")}
+                  source={require("../../../../assets/images/4ss1.jpg")}
                   resizeMode="contain"
                   style={styles.image3}
                 ></Image>
@@ -148,8 +162,11 @@ function ForestDetails({navigation}) {
             </View>
           </ScrollView>
         </View>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AddPlantPage')}>
+        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet77]} onPress={() => navigation.navigate('AdminAddPlantPage')}>
             <Text style={styles.addNewAnimals}>Add New Plant</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AdminPlantsApprovalList')}>
+            <Text style={styles.addNewAnimals}>Approvals</Text>
         </TouchableOpacity>
         </View>
     }
@@ -161,22 +178,34 @@ function ForestDetails({navigation}) {
             contentContainerStyle={styles.scrollArea1_contentContainerStyle}
           >
             <View style={styles.group1Row}>
-            <TouchableOpacity onPress={() => navigation.navigate('AnimalDetails')}>
+            <TouchableOpacity onPress={() => navigation.navigate('AdminAnimalDetails')}>
               <View style={styles.group1}>
                 <View style={styles.rect2}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image1}
                   ></Image>
                   <Text style={styles.kariPlants1}>Kari Animals</Text>
+                  <View style={styles.icon1Row}>
+                  <TouchableOpacity onPress={() => navigation.navigate('AdminUpdateAnimal')}>
+                    <FontAwesomeIcon
+                      name="edit"
+                      style={styles.icon1}
+                    ></FontAwesomeIcon>
+                    </TouchableOpacity>
+                    <MaterialCommunityIconsIcon
+                      name="delete"
+                      style={styles.icon2}
+                    ></MaterialCommunityIconsIcon>
+                  </View>
                 </View>
               </View>
               </TouchableOpacity>
               <View style={styles.group2}>
                 <View style={styles.rect3}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image2}
                   ></Image>
@@ -187,7 +216,7 @@ function ForestDetails({navigation}) {
             <View style={styles.group3}>
               <View style={styles.rect4}>
                 <Image
-                  source={require("../../../assets/images/4ss1.jpg")}
+                  source={require("../../../../assets/images/4ss1.jpg")}
                   resizeMode="contain"
                   style={styles.image3}
                 ></Image>
@@ -196,8 +225,11 @@ function ForestDetails({navigation}) {
             </View>
           </ScrollView>
         </View>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AddAnimalPage')}>
-            <Text style={styles.addNewAnimals}>Add new Animals</Text>
+        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet77]} onPress={() => navigation.navigate('AddAnimalPage')}>
+            <Text style={styles.addNewAnimals}>Add New Animal Species</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AdminAnimalApprovalList')}>
+            <Text style={styles.addNewAnimals}>Approvals</Text>
         </TouchableOpacity>
         </View>
     }
@@ -211,6 +243,27 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
     flex: 1
+  },
+  icon1Row: {
+    height: 29,
+    flexDirection: "row",
+    marginTop: 7,
+    marginLeft: 39,
+    marginRight: 41
+  },
+  icon1: {
+    color: "rgba(65,117,5,1)",
+    fontSize: 27,
+    height: 27,
+    width: 27,
+    marginTop: 2
+  },
+  icon2: {
+    color: "rgba(208,2,27,1)",
+    fontSize: 27,
+    height: 29,
+    width: 27,
+    marginLeft: 38
   },
   background: {
     position: "absolute",
@@ -267,6 +320,7 @@ const styles = StyleSheet.create({
     borderRadius: 38
   },
   backgroundStack: {
+    backgroundColor: "white",
     width: 414,
     height: 896
   },
@@ -274,7 +328,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFF",
-    marginLeft:-12
+    marginLeft:-12,
+    marginTop: -30,
   },
   textWrapper: {
     height: 34,
@@ -334,6 +389,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    marginTop:-33,
     borderRadius: 2,
     shadowColor: "#000",
     shadowOffset: {
@@ -344,8 +400,27 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
-    paddingLeft: 16,
-    paddingRight: 16
+    paddingLeft: 13,
+    paddingRight: 13
+  },
+  containerbtn2: {
+    backgroundColor: "#3F51B5",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop:15,
+    borderRadius: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 5,
+    elevation: 2,
+    minWidth: 88,
+    paddingLeft: 13,
+    paddingRight: 13
   },
   addNewAnimals: {
     color: "#fff",
@@ -467,7 +542,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
     marginLeft: 46
   },
-  materialButtonViolet7: {
+  materialButtonViolet77: {
     height: 39,
     width: 363,
     position: "absolute",
@@ -476,10 +551,20 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     backgroundColor: "rgba(34,139,34,1)"
   },
+  materialButtonViolet7: {
+    height: 39,
+    width: 363,
+    position: "absolute",
+    left: 25,
+    top: 169,
+    borderRadius: 13,
+    backgroundColor: "#3F51B5"
+  },
   backgroundStack: {
+    backgroundColor: "white",
     width: 415,
     height: 897
   }
 });
 
-export default ForestDetails;
+export default AdminForestDetails;

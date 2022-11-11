@@ -16,7 +16,7 @@ function HomePage({navigation}) {
               <View style={styles.group}>
                 <View style={styles.rect7}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image5}
                   ></Image>
@@ -27,7 +27,7 @@ function HomePage({navigation}) {
               <View style={styles.group1}>
                 <View style={styles.rect8}>
                   <Image
-                    source={require("../../../assets/images/4ss1.jpg")}
+                    source={require("../../../../assets/images/4ss1.jpg")}
                     resizeMode="contain"
                     style={styles.image6}
                   ></Image>
@@ -38,7 +38,7 @@ function HomePage({navigation}) {
             <View style={styles.group2}>
               <View style={styles.rect9}>
                 <Image
-                  source={require("../../../assets/images/4ss1.jpg")}
+                  source={require("../../../../assets/images/4ss1.jpg")}
                   resizeMode="contain"
                   style={styles.image7}
                 ></Image>

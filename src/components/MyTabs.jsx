@@ -7,12 +7,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createMaterialBottomTabNavigator();
 
-import HomePage from "../screens/User/Home/HomePage";
-import ForestDetails from "../screens/User/Home/ForestDetails";
-import PlantsDetails from "../screens/User/Home/PlantsDetails";
-import AnimalDetails from "../screens/User/Home/AnimalDetails";
-import AddAnimalPage from "../screens/User/Home/AddAnimalPage";
-import AddPlantPage from "../screens/User/Home/AddPlantPage";
+import HomePage from "../screens/User/Home/Forests/HomePage";
+import ForestDetails from "../screens/User/Home/Forests/ForestDetails";
+import PlantsDetails from "../screens/User/Home/Plants/PlantsDetails";
+import AnimalDetails from "../screens/User/Home/Animals/AnimalDetails";
+import AddAnimalPage from "../screens/User/Home/Animals/AddAnimalPage";
+import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
 
 import Organization from "../screens/User/Organization/Organization";
 import Profile from "../screens/User/Profile/Profile";
