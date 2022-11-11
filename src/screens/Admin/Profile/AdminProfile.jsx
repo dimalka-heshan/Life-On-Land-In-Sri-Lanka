@@ -1,11 +1,12 @@
 import { View, Text } from "react-native";
 
-function HomeScreen() {
+function AdminProfile() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
+        <Text>AdminProfile</Text>
+        
       </View>
     );
   }
 
-  export default HomeScreen;
+  export default AdminProfile;

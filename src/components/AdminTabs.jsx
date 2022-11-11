@@ -7,17 +7,25 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createMaterialBottomTabNavigator();
 
-import HomePage from "../screens/User/Home/Forests/HomePage";
-import ForestDetails from "../screens/User/Home/Forests/ForestDetails";
-import PlantsDetails from "../screens/User/Home/Plants/PlantsDetails";
-import AnimalDetails from "../screens/User/Home/Animals/AnimalDetails";
-import AddAnimalPage from "../screens/User/Home/Animals/AddAnimalPage";
-import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
+import AdminHomePage from "../screens/Admin/Home/Forests/AdminHomePage";
+import AddForestPage from "../screens/Admin/Home/Forests/AddForestPage";
+import UpdateForest from "../screens/Admin/Home/Forests/UpdateForest";
+import AdminForestDetails from '../screens/Admin/Home/Forests/AdminForestDetails';
+import AdminAddAnimalPage from '../screens/Admin/Home/Animals/AdminAddAnimalPage';
+import AdminAddPlantPage from '../screens/Admin/Home/Plants/AdminAddPlantPage';
+import AdminAnimalDetails from '../screens/Admin/Home/Animals/AdminAnimalDetails';
+import AdminPlantsDetails from '../screens/Admin/Home/Plants/AdminPlantsDetails';
+import AdminUpdateAnimal from '../screens/Admin/Home/Animals/AdminUpdateAnimal';
+import AdminUpdatePlant from '../screens/Admin/Home/Plants/AdminUpdatePlant';
+import AdminPlantsApprovalList from '../screens/Admin/Home/Plants/AdminPlantsApprovalList';
+import AdminAnimalApprovalList from '../screens/Admin/Home/Animals/AdminAnimalApprovalList';
+import AdminsAnimalsApproval from '../screens/Admin/Home/Animals/AdminsAnimalsApproval';
+import AdminsPlantApproval from '../screens/Admin/Home/Plants/AdminsPlantApproval';
 
-import Organization from "../screens/User/Organization/Organization";
-import Profile from "../screens/User/Profile/Profile";
-import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
-import Donations from '../screens/User/Donations/Donations'
+import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
+import AdminProfile from "../screens/Admin/Profile/AdminProfile";
+import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
+import AdminDonations from '../screens/Admin/Donations/AdminDonations'
 
 const HomeStack = createNativeStackNavigator();
 
@@ -25,43 +33,99 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
      <HomeStack.Screen 
-        name="HomePage" 
-        component={HomePage}           
+        name="AdminHomePage" 
+        component={AdminHomePage}           
         options={{
             headerShown: false,
         }}
       />             
      <HomeStack.Screen 
-        name="ForestDetails" 
-        component={ForestDetails}
+        name="AddForestPage" 
+        component={AddForestPage}
         options={{
           headerShown: false,
       }} 
      />
      <HomeStack.Screen 
-        name="PlantsDetails" 
-        component={PlantsDetails}
+        name="UpdateForest" 
+        component={UpdateForest}
         options={{
           headerShown: false,
       }} 
      />
      <HomeStack.Screen 
-        name="AnimalDetails" 
-        component={AnimalDetails}
+        name="AdminForestDetails" 
+        component={AdminForestDetails}
         options={{
           headerShown: false,
       }} 
      />
      <HomeStack.Screen 
-        name="AddAnimalPage" 
-        component={AddAnimalPage}
+        name="AdminAddAnimalPage" 
+        component={AdminAddAnimalPage}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAddPlantPage" 
+        component={AdminAddPlantPage}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAnimalDetails" 
+        component={AdminAnimalDetails}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminPlantsDetails" 
+        component={AdminPlantsDetails}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminUpdateAnimal" 
+        component={AdminUpdateAnimal}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminUpdatePlant" 
+        component={AdminUpdatePlant}
         options={{
           headerShown: false,
       }} 
      />
       <HomeStack.Screen 
-        name="AddPlantPage" 
-        component={AddPlantPage}
+        name="AdminPlantsApprovalList" 
+        component={AdminPlantsApprovalList}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminAnimalApprovalList" 
+        component={AdminAnimalApprovalList}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminsAnimalsApproval" 
+        component={AdminsAnimalsApproval}
+        options={{
+          headerShown: false,
+      }} 
+     />
+     <HomeStack.Screen 
+        name="AdminsPlantApproval" 
+        component={AdminsPlantApproval}
         options={{
           headerShown: false,
       }} 
@@ -70,7 +134,7 @@ function HomeStackScreen() {
    );
  }
 
-function MyTabs() {
+function AdminTabs() {
   return (
     <Tab.Navigator
     initialRouteName="Home"
@@ -109,7 +173,7 @@ function MyTabs() {
       />
       <Tab.Screen 
         name="BlogsAndNews" 
-        component={BlogsAndNews} 
+        component={AdminBlogsAndNews} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -128,7 +192,7 @@ function MyTabs() {
       />
       <Tab.Screen 
         name="Organization" 
-        component={Organization} 
+        component={AdminOrganization} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -148,7 +212,7 @@ function MyTabs() {
             
       <Tab.Screen 
         name="Donations" 
-        component={Donations} 
+        component={AdminDonations} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -168,7 +232,7 @@ function MyTabs() {
 
       <Tab.Screen 
         name="Profile" 
-        component={Profile} 
+        component={AdminProfile} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -196,5 +260,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MyTabs;
+export default AdminTabs;
   
