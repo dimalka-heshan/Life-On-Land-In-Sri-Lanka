@@ -15,7 +15,7 @@ import AddAnimalPage from "../screens/User/Home/Animals/AddAnimalPage";
 import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
 
 import Organization from "../screens/User/Organization/Organization";
-import Profile from "../screens/User/Profile/Profile";
+import Profile from "../screens/User/Profile/ProfilePage";
 import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
 import Donations from '../screens/User/Donations/Donations'
 

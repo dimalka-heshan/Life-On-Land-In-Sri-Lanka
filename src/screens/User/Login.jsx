@@ -18,7 +18,9 @@ function Login({navigation}) {
         <Text style={styles.dontHaveAnAccountYetSignUp}>
           Don’t have an account yet ?         
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Registration')}><Text style={styles.signUp}>Sign Up</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+          <Text style={styles.signUp}>Sign Up</Text>
+        </TouchableOpacity>
         <View style={[styles.containertxt1, styles.materialUnderlineTextbox15]}>
               <TextInput
                 placeholder="Enter your Email"
