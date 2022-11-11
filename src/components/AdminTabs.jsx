@@ -7,17 +7,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createMaterialBottomTabNavigator();
 
-import HomePage from "../screens/User/Home/HomePage";
-import ForestDetails from "../screens/User/Home/ForestDetails";
-import PlantsDetails from "../screens/User/Home/PlantsDetails";
-import AnimalDetails from "../screens/User/Home/AnimalDetails";
-import AddAnimalPage from "../screens/User/Home/AddAnimalPage";
-import AddPlantPage from "../screens/User/Home/AddPlantPage";
+import AdminHomePage from "../screens/Admin/Home/AdminHomePage";
+import AddForestPage from "../screens/Admin/Home/AddForestPage";
+import UpdateForest from "../screens/Admin/Home/UpdateForest";
 
-import Organization from "../screens/User/Organization/Organization";
-import Profile from "../screens/User/Profile/Profile";
-import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
-import Donations from '../screens/User/Donations/Donations'
+import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
+import AdminProfile from "../screens/Admin/Profile/AdminProfile";
+import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
+import AdminDonations from '../screens/Admin/Donations/AdminDonations'
 
 const HomeStack = createNativeStackNavigator();
 
@@ -25,43 +22,22 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
      <HomeStack.Screen 
-        name="HomePage" 
-        component={HomePage}           
+        name="AdminHomePage" 
+        component={AdminHomePage}           
         options={{
             headerShown: false,
         }}
       />             
      <HomeStack.Screen 
-        name="ForestDetails" 
-        component={ForestDetails}
+        name="AddForestPage" 
+        component={AddForestPage}
         options={{
           headerShown: false,
       }} 
      />
      <HomeStack.Screen 
-        name="PlantsDetails" 
-        component={PlantsDetails}
-        options={{
-          headerShown: false,
-      }} 
-     />
-     <HomeStack.Screen 
-        name="AnimalDetails" 
-        component={AnimalDetails}
-        options={{
-          headerShown: false,
-      }} 
-     />
-     <HomeStack.Screen 
-        name="AddAnimalPage" 
-        component={AddAnimalPage}
-        options={{
-          headerShown: false,
-      }} 
-     />
-      <HomeStack.Screen 
-        name="AddPlantPage" 
-        component={AddPlantPage}
+        name="UpdateForest" 
+        component={UpdateForest}
         options={{
           headerShown: false,
       }} 
@@ -70,7 +46,7 @@ function HomeStackScreen() {
    );
  }
 
-function MyTabs() {
+function AdminTabs() {
   return (
     <Tab.Navigator
     initialRouteName="Home"
@@ -109,7 +85,7 @@ function MyTabs() {
       />
       <Tab.Screen 
         name="BlogsAndNews" 
-        component={BlogsAndNews} 
+        component={AdminBlogsAndNews} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -128,7 +104,7 @@ function MyTabs() {
       />
       <Tab.Screen 
         name="Organization" 
-        component={Organization} 
+        component={AdminOrganization} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -148,7 +124,7 @@ function MyTabs() {
             
       <Tab.Screen 
         name="Donations" 
-        component={Donations} 
+        component={AdminDonations} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -168,7 +144,7 @@ function MyTabs() {
 
       <Tab.Screen 
         name="Profile" 
-        component={Profile} 
+        component={AdminProfile} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -196,5 +172,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MyTabs;
+export default AdminTabs;
   
