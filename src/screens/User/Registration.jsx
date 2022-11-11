@@ -52,10 +52,11 @@ function Registration({navigation}) {
         <TouchableOpacity style={[styles.containertttt, styles.materialButtonViolet16]}>
             <Text style={styles.register}>Register</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}><Text style={styles.signUp}>Sign In</Text></TouchableOpacity>
-       
-
+        <View>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.signUp}>Sign In</Text>
+          </TouchableOpacity> */}
+        </View>
       </View>
     </View>
   );
