@@ -44,7 +44,7 @@ function HomePage({ navigation }) {
                       forestImage: forest.forestImage,
                       forestDetails: forest.forestDetails,
                     })
-                  } // Pass the forest object to the next screen
+                  }
                 >
                   <View style={styles.rect9}>
                     <Image

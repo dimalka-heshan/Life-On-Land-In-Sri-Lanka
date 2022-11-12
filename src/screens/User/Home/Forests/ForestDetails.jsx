@@ -24,6 +24,8 @@ function ForestDetails({ navigation }) {
     setForest(data);
   }, []);
 
+  console.log(forest.forestId);
+
   //Get all plants from the database
   const [allPlants, setAllPlants] = useState([]);
 
@@ -34,6 +36,24 @@ function ForestDetails({ navigation }) {
       )
       .then((res) => {
         setAllPlants(res.data.plants);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  //Get all Animals from the database
+  const [allAnimals, setAllAnimals] = useState([]);
+
+  console.log(allAnimals);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminGetAllAnimals/${forest.forestId}`
+      )
+      .then((res) => {
+        setAllAnimals(res.data.animals);
       })
       .catch((err) => {
         console.log(err);
@@ -207,40 +227,20 @@ function ForestDetails({ navigation }) {
                 contentContainerStyle={styles.scrollArea1_contentContainerStyle}
               >
                 <View style={styles.group1Row}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("AnimalDetails")}
-                  >
-                    <View style={styles.group1}>
-                      <View style={styles.rect2}>
-                        <Image
-                          source={require("../../../../assets/images/4ss1.jpg")}
-                          resizeMode="contain"
-                          style={styles.image1}
-                        ></Image>
-                        <Text style={styles.kariPlants1}>Kari Animals</Text>
+                  {allAnimals.map((animal) => (
+                    <TouchableOpacity>
+                      <View style={styles.group1}>
+                        <View style={styles.rect2}>
+                          <Image
+                            source={{ uri: animal.imageUrl }}
+                            resizeMode="contain"
+                            style={styles.image1}
+                          ></Image>
+                          <Text style={styles.kariPlants1}>{animal.name}</Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.group2}>
-                    <View style={styles.rect3}>
-                      <Image
-                        source={require("../../../../assets/images/4ss1.jpg")}
-                        resizeMode="contain"
-                        style={styles.image2}
-                      ></Image>
-                      <Text style={styles.kariPlants2}>Kari Animals</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.group3}>
-                  <View style={styles.rect4}>
-                    <Image
-                      source={require("../../../../assets/images/4ss1.jpg")}
-                      resizeMode="contain"
-                      style={styles.image3}
-                    ></Image>
-                    <Text style={styles.kariPlants3}>Kari Animals</Text>
-                  </View>
+                    </TouchableOpacity>
+                  ))}
                 </View>
               </ScrollView>
             </View>

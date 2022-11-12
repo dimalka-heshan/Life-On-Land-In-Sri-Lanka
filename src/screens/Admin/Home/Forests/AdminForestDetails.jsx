@@ -1,239 +1,346 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity, Text, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  Image,
+  Alert,
+} from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
-function AdminForestDetails({navigation}) {
+function AdminForestDetails({ navigation }) {
+  const route = useRoute();
 
-    const [active1, setActive1] = useState(false);
-    const [active2, setActive2] = useState(true);
-    const [active3, setActive3] = useState(true);
+  const [forest, setForest] = useState({} || null);
 
-    const handleClick1 = () => {
-        setActive2(true);
-        setActive3(true);
-        setActive1(!active1);
+  useEffect(() => {
+    const data = {
+      forestId: route.params.forestId,
+      forestName: route.params.forestName,
+      forestImage: route.params.forestImage,
+      forestDetails: route.params.forestDetails,
     };
+    setForest(data);
+  }, [route.params.forestId]);
 
-    const handleClick2 = () => {
-        setActive1(true);
-        setActive3(true);
-        setActive2(!active2);
-    };
+  //Get all plants from the database
+  const [allPlants, setAllPlants] = useState([]);
 
-    const handleClick3 = () => {
-        setActive1(true);
-        setActive2(true);
-        setActive3(!active3);
-    };
+  useEffect(() => {
+    axios
+      .get(
+        `https://life-on-land-backend.azurewebsites.net/api/getAllPlantsInForest/${forest.forestId}`
+      )
+      .then((res) => {
+        setAllPlants(res.data.plants);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [forest.forestId]);
 
+  //Get all Animals from the database
+  const [allAnimals, setAllAnimals] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminGetAllAnimals/${forest.forestId}`
+      )
+      .then((res) => {
+        setAllAnimals(res.data.animals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [forest.forestId]);
+
+  const [active1, setActive1] = useState(false);
+  const [active2, setActive2] = useState(true);
+  const [active3, setActive3] = useState(true);
+
+  const handleClick1 = () => {
+    setActive2(true);
+    setActive3(true);
+    setActive1(!active1);
+  };
+
+  const handleClick2 = () => {
+    setActive1(true);
+    setActive3(true);
+    setActive2(!active2);
+  };
+
+  const handleClick3 = () => {
+    setActive1(true);
+    setActive2(true);
+    setActive3(!active3);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-
-      <View style={[styles.container1, styles.cupertinoSegmentWithThreeTabs4]}>
-      <View style={styles.textWrapper}>
-        <TouchableOpacity onPress={handleClick1} 
-            style={{ backgroundColor: active1 ? "rgba(159,241,109,1)" : "white",
+        <View
+          style={[styles.container1, styles.cupertinoSegmentWithThreeTabs4]}
+        >
+          <View style={styles.textWrapper}>
+            <TouchableOpacity
+              onPress={handleClick1}
+              style={{
+                backgroundColor: active1 ? "rgba(159,241,109,1)" : "white",
                 flex: 1,
                 alignItems: "center",
                 padding: 8,
                 height: 50,
                 marginTop: -8,
                 borderRadius: 26,
-                shadowColor: active1 ? "rgba(159,241,109,1)" : '#000',
+                shadowColor: active1 ? "rgba(159,241,109,1)" : "#000",
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.8,
-                shadowRadius: 2,  
-                elevation: 10 }}
-        >
-          <Text style={styles.details}>Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClick2} 
-                    style={{ backgroundColor: active2 ? "rgba(159,241,109,1)" : "white",
-                    flex: 1,
-                    alignItems: "center",
-                    padding: 8,
-                    height: 50,
-                    marginTop: -8,
-                    borderRadius: 26,
-                    shadowColor: active2 ? "rgba(159,241,109,1)" :'#000',
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 2,  
-                    elevation: 10 }}
-        >
-          <Text style={styles.plants}>Plants</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleClick3} 
-                            style={{ backgroundColor: active3 ? "rgba(159,241,109,1)" : "white",
-                            flex: 1,
-                            alignItems: "center",
-                            padding: 8,
-                            height: 50,
-                            marginTop: -8,
-                            borderRadius: 26,
-                            shadowColor: active3 ? "rgba(159,241,109,1)" : '#000',
-                            shadowOffset: { width: 0, height: 1 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 2,  
-                            elevation: 10 }}
-        >
-          <Text style={styles.animals}>Animals</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-    
-    {active1 == false &&
-            <View>
-            <View style={styles.scrollArea}>
-            <ScrollView
-                contentContainerStyle={styles.scrollArea_contentContainerStyle}
+                shadowRadius: 2,
+                elevation: 10,
+              }}
             >
-                <Text style={styles.loremIpsum}>
-                Sinharaja Rain ForestSinharaja Rain Forest (a UNESCO World
-                Heritage Site), the last viable remnant of Sri Lanka’s tropical
-                lowland rainforest spanning an area of 18900 acres is located
-                within Sabaragamuwa
-                </Text>
-            </ScrollView>
+              <Text style={styles.details}>Details</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClick2}
+              style={{
+                backgroundColor: active2 ? "rgba(159,241,109,1)" : "white",
+                flex: 1,
+                alignItems: "center",
+                padding: 8,
+                height: 50,
+                marginTop: -8,
+                borderRadius: 26,
+                shadowColor: active2 ? "rgba(159,241,109,1)" : "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 10,
+              }}
+            >
+              <Text style={styles.plants}>Plants</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClick3}
+              style={{
+                backgroundColor: active3 ? "rgba(159,241,109,1)" : "white",
+                flex: 1,
+                alignItems: "center",
+                padding: 8,
+                height: 50,
+                marginTop: -8,
+                borderRadius: 26,
+                shadowColor: active3 ? "rgba(159,241,109,1)" : "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 10,
+              }}
+            >
+              <Text style={styles.animals}>Animals</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {active1 == false && (
+          <View>
+            <View style={styles.scrollArea}>
+              <ScrollView
+                contentContainerStyle={styles.scrollArea_contentContainerStyle}
+              >
+                <Text style={styles.loremIpsum}>{forest.forestDetails}</Text>
+              </ScrollView>
             </View>
-            <Text style={styles.loremIpsum2}>Sinharaja Rain Forest</Text>
+            <Text style={styles.loremIpsum2}>{forest.forestName}</Text>
             <Image
-            source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
-            resizeMode="contain"
-            style={styles.imagefrst}
+              source={{ uri: forest.forestImage }}
+              resizeMode="contain"
+              style={styles.imagefrst}
             ></Image>
-            </View>
-    }
+          </View>
+        )}
 
-    {active2 == false &&
-        <View style={{marginLeft:-9}}>
-        <View style={styles.scrollArea1}>
-          <ScrollView
-            contentContainerStyle={styles.scrollArea1_contentContainerStyle}
-          >
-            <View style={styles.group1Row}>
-            <TouchableOpacity onPress={() => navigation.navigate('AdminPlantsDetails')}>
-              <View style={styles.group1}>
-                <View style={styles.rect2}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image1}
-                  ></Image>
-                  <Text style={styles.kariPlants1}>Kari Plants</Text>
-                  <View style={styles.icon1Row}>
-                  <TouchableOpacity onPress={() => navigation.navigate('AdminUpdatePlant')}>
-                    <FontAwesomeIcon
-                      name="edit"
-                      style={styles.icon1}
-                    ></FontAwesomeIcon>
+        {active2 == false && (
+          <View style={{ marginLeft: -9 }}>
+            <View style={styles.scrollArea1}>
+              <ScrollView
+                contentContainerStyle={styles.scrollArea1_contentContainerStyle}
+              >
+                <View style={styles.group1Row}>
+                  {allPlants.map((plant) => (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("AdminPlantsDetails")}
+                    >
+                      <View style={styles.group1}>
+                        <View style={styles.rect2}>
+                          <Image
+                            source={require("../../../../assets/images/4ss1.jpg")}
+                            resizeMode="contain"
+                            style={styles.image1}
+                          ></Image>
+                          <Text style={styles.kariPlants1}>Kari Plants</Text>
+                          <View style={styles.icon1Row}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                navigation.navigate("AdminUpdatePlant")
+                              }
+                            >
+                              <FontAwesomeIcon
+                                name="edit"
+                                style={styles.icon1}
+                              ></FontAwesomeIcon>
+                            </TouchableOpacity>
+                            <MaterialCommunityIconsIcon
+                              name="delete"
+                              style={styles.icon2}
+                            ></MaterialCommunityIconsIcon>
+                          </View>
+                        </View>
+                      </View>
                     </TouchableOpacity>
-                    <MaterialCommunityIconsIcon
-                      name="delete"
-                      style={styles.icon2}
-                    ></MaterialCommunityIconsIcon>
-                  </View>
+                  ))}
                 </View>
-              </View>
-              </TouchableOpacity>
-              <View style={styles.group2}>
-                <View style={styles.rect3}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image2}
-                  ></Image>
-                  <Text style={styles.kariPlants2}>Kari Plants</Text>
-                </View>
-              </View>
+              </ScrollView>
             </View>
-            <View style={styles.group3}>
-              <View style={styles.rect4}>
-                <Image
-                  source={require("../../../../assets/images/4ss1.jpg")}
-                  resizeMode="contain"
-                  style={styles.image3}
-                ></Image>
-                <Text style={styles.kariPlants3}>Kari Plants</Text>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet77]} onPress={() => navigation.navigate('AdminAddPlantPage')}>
-            <Text style={styles.addNewAnimals}>Add New Plant</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AdminPlantsApprovalList')}>
-            <Text style={styles.addNewAnimals}>Approvals</Text>
-        </TouchableOpacity>
-        </View>
-    }
+            <TouchableOpacity
+              style={[styles.containerbtn, styles.materialButtonViolet77]}
+              onPress={() => navigation.navigate("AdminAddPlantPage")}
+            >
+              <Text style={styles.addNewAnimals}>Add New Plant</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.containerbtn2, styles.materialButtonViolet7]}
+              onPress={() =>
+                navigation.push("AdminPlantsApprovalList", {
+                  forestId: forest.forestId,
+                })
+              }
+            >
+              <Text style={styles.addNewAnimals}>Approvals</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-    {active3 == false &&
-        <View style={{marginLeft:-9}}>
-        <View style={styles.scrollArea1}>
-          <ScrollView
-            contentContainerStyle={styles.scrollArea1_contentContainerStyle}
-          >
-            <View style={styles.group1Row}>
-            <TouchableOpacity onPress={() => navigation.navigate('AdminAnimalDetails')}>
-              <View style={styles.group1}>
-                <View style={styles.rect2}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image1}
-                  ></Image>
-                  <Text style={styles.kariPlants1}>Kari Animals</Text>
-                  <View style={styles.icon1Row}>
-                  <TouchableOpacity onPress={() => navigation.navigate('AdminUpdateAnimal')}>
-                    <FontAwesomeIcon
-                      name="edit"
-                      style={styles.icon1}
-                    ></FontAwesomeIcon>
-                    </TouchableOpacity>
-                    <MaterialCommunityIconsIcon
-                      name="delete"
-                      style={styles.icon2}
-                    ></MaterialCommunityIconsIcon>
-                  </View>
+        {active3 == false && (
+          <View style={{ marginLeft: -9 }}>
+            <View style={styles.scrollArea1}>
+              <ScrollView
+                contentContainerStyle={styles.scrollArea1_contentContainerStyle}
+              >
+                <View style={styles.group1Row}>
+                  {allAnimals
+                    .filter((animal) => animal.adminStatus === "Approved")
+                    .map((animal) => (
+                      <TouchableOpacity
+                        key={animal._id}
+                        onPress={() =>
+                          navigation.navigate("AdminAnimalDetails", {
+                            animalId: animal._id,
+                            animalName: animal.name,
+                            animalImage: animal.imageUrl,
+                            animalDetails: animal.details,
+                          })
+                        }
+                      >
+                        <View style={styles.group1}>
+                          <View style={styles.rect2}>
+                            <Image
+                              source={{ uri: animal.imageUrl }}
+                              resizeMode="contain"
+                              style={styles.image1}
+                            ></Image>
+                            <Text style={styles.animalName}>{animal.name}</Text>
+                            <View style={styles.icon1Row}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.push("AdminUpdateAnimal", {
+                                    animalId: animal._id,
+                                  })
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  name="edit"
+                                  style={styles.icon1}
+                                ></FontAwesomeIcon>
+                              </TouchableOpacity>
+                              <MaterialCommunityIconsIcon
+                                name="delete"
+                                style={styles.icon2}
+                                onPress={() => {
+                                  Alert.alert(
+                                    "Delete Animal",
+                                    "Are you sure you want to delete this animal?",
+                                    [
+                                      {
+                                        text: "Cancel",
+                                        onPress: () =>
+                                          console.log("Cancel Pressed"),
+                                        style: "cancel",
+                                      },
+                                      {
+                                        text: "OK",
+                                        onPress: () => {
+                                          axios
+                                            .delete(
+                                              `https://life-on-land-backend.azurewebsites.net/api/forest/deleteAnimalPlans/${animal._id}`
+                                            )
+                                            .then((res) => {
+                                              console.log(res);
+                                              alert(
+                                                "Animal deleted successfully"
+                                              );
+                                              //Refresh the page
+                                              navigation.push(
+                                                "AdminForestDetails"
+                                              );
+                                            })
+                                            .catch((err) => {
+                                              console.log(err);
+                                            });
+                                        },
+                                      },
+                                    ],
+                                    { cancelable: false }
+                                  );
+                                }}
+                              ></MaterialCommunityIconsIcon>
+                            </View>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
                 </View>
-              </View>
-              </TouchableOpacity>
-              <View style={styles.group2}>
-                <View style={styles.rect3}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image2}
-                  ></Image>
-                  <Text style={styles.kariPlants2}>Kari Animals</Text>
-                </View>
-              </View>
+              </ScrollView>
             </View>
-            <View style={styles.group3}>
-              <View style={styles.rect4}>
-                <Image
-                  source={require("../../../../assets/images/4ss1.jpg")}
-                  resizeMode="contain"
-                  style={styles.image3}
-                ></Image>
-                <Text style={styles.kariPlants3}>Kari Animals</Text>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet77]} onPress={() => navigation.navigate('AddAnimalPage')}>
-            <Text style={styles.addNewAnimals}>Add New Animal Species</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonViolet7]} onPress={() => navigation.navigate('AdminAnimalApprovalList')}>
-            <Text style={styles.addNewAnimals}>Approvals</Text>
-        </TouchableOpacity>
-        </View>
-    }
-
+            <TouchableOpacity
+              style={[styles.containerbtn, styles.materialButtonViolet77]}
+              onPress={() =>
+                navigation.navigate("AdminAddAnimalPage", {
+                  forestId: forest.forestId,
+                })
+              }
+            >
+              <Text style={styles.addNewAnimals}>Add New Animal Species</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.containerbtn2, styles.materialButtonViolet7]}
+              onPress={() =>
+                navigation.navigate("AdminAnimalApprovalList", {
+                  forestId: forest.forestId,
+                })
+              }
+            >
+              <Text style={styles.addNewAnimals}>Approvals</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -242,28 +349,28 @@ function AdminForestDetails({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   icon1Row: {
     height: 29,
     flexDirection: "row",
     marginTop: 7,
     marginLeft: 39,
-    marginRight: 41
+    marginRight: 41,
   },
   icon1: {
     color: "rgba(65,117,5,1)",
     fontSize: 27,
     height: 27,
     width: 27,
-    marginTop: 2
+    marginTop: 2,
   },
   icon2: {
     color: "rgba(208,2,27,1)",
     fontSize: 27,
     height: 29,
     width: 27,
-    marginLeft: 38
+    marginLeft: 38,
   },
   background: {
     position: "absolute",
@@ -272,7 +379,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderColor: "transparent",
     left: 0,
-    top: 0
+    top: 0,
   },
   cupertinoSegmentWithThreeTabs4: {
     height: 66,
@@ -281,7 +388,7 @@ const styles = StyleSheet.create({
     left: 21,
     top: 91,
     backgroundColor: "rgba(159,241,109,1)",
-    borderRadius: 26
+    borderRadius: 26,
   },
   scrollArea: {
     top: 469,
@@ -289,11 +396,11 @@ const styles = StyleSheet.create({
     width: 414,
     height: 427,
     position: "absolute",
-    backgroundColor: "rgba(255,255,255,1)"
+    backgroundColor: "rgba(255,255,255,1)",
   },
   scrollArea_contentContainerStyle: {
     height: 1959,
-    width: 414
+    width: 414,
   },
   loremIpsum: {
     color: "rgba(62,62,62,1)",
@@ -309,7 +416,7 @@ const styles = StyleSheet.create({
     left: 30,
     position: "absolute",
     color: "#121212",
-    fontSize: 20
+    fontSize: 20,
   },
   imagefrst: {
     top: 254,
@@ -317,18 +424,18 @@ const styles = StyleSheet.create({
     width: 302,
     height: 203,
     position: "absolute",
-    borderRadius: 38
+    borderRadius: 38,
   },
   backgroundStack: {
     backgroundColor: "white",
     width: 414,
-    height: 896
+    height: 896,
   },
   container1: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFF",
-    marginLeft:-12,
+    marginLeft: -12,
     marginTop: -30,
   },
   textWrapper: {
@@ -336,7 +443,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 30,
     paddingRight: 30,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   segmentTextWrapper1: {
     flex: 1,
@@ -346,29 +453,29 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: -8,
     borderRadius: 26,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,  
-    elevation: 10
+    shadowRadius: 2,
+    elevation: 10,
   },
   details: {
     marginTop: 4,
     fontWeight: "bold",
     fontSize: 18,
-    color: "rgba(0,0,0,1)"
+    color: "rgba(0,0,0,1)",
   },
   segmentTextWrapper2: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "rgba(159,241,109,1)",
-    padding: 6
+    padding: 6,
   },
   plants: {
     marginTop: 4,
     fontWeight: "bold",
     fontSize: 18,
-    color: "rgba(0,0,0,1)"
+    color: "rgba(0,0,0,1)",
   },
   segmentTextWrapper3: {
     flex: 1,
@@ -376,55 +483,55 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(159,241,109,1)",
     padding: 6,
     borderBottomRightRadius: 5,
-    borderTopRightRadius: 5
+    borderTopRightRadius: 5,
   },
   animals: {
     marginTop: 4,
     fontWeight: "bold",
     fontSize: 18,
-    color: "rgba(0,0,0,1)"
+    color: "rgba(0,0,0,1)",
   },
   containerbtn: {
     backgroundColor: "#3F51B5",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    marginTop:-33,
+    marginTop: -33,
     borderRadius: 2,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 13,
-    paddingRight: 13
+    paddingRight: 13,
   },
   containerbtn2: {
     backgroundColor: "#3F51B5",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    marginTop:15,
+    marginTop: 15,
     borderRadius: 2,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 13,
-    paddingRight: 13
+    paddingRight: 13,
   },
   addNewAnimals: {
     color: "#fff",
-    fontSize: 16
+    fontSize: 16,
   },
   scrollArea1: {
     top: 212,
@@ -432,16 +539,17 @@ const styles = StyleSheet.create({
     width: 415,
     height: 684,
     position: "absolute",
-    backgroundColor: "rgba(255,255,255,1)"
+    backgroundColor: "rgba(255,255,255,1)",
   },
   scrollArea1_contentContainerStyle: {
     marginTop: -25,
     height: 685,
-    width: 415
+    width: 415,
   },
   group1: {
     width: 172,
-    height: 260
+    height: 260,
+    margin: 10,
   },
   rect2: {
     width: 172,
@@ -451,29 +559,29 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image1: {
     width: 140,
     height: 139,
     borderRadius: 25,
-    marginTop: 13,
-    marginLeft: 16
+    marginTop: 15,
+    marginLeft: 16,
   },
-  kariPlants1: {
+  animalName: {
     color: "rgba(48,64,34,1)",
     fontSize: 16,
-    marginTop: 32,
-    marginLeft: 46
+    marginTop: 15,
+    textAlign: "center",
   },
   group2: {
     width: 172,
     height: 260,
-    marginLeft: 13
+    marginLeft: 13,
   },
   rect3: {
     width: 172,
@@ -483,37 +591,38 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image2: {
     width: 140,
     height: 139,
     borderRadius: 25,
     marginTop: 13,
-    marginLeft: 16
+    marginLeft: 16,
   },
   kariPlants2: {
     color: "rgba(48,64,34,1)",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46
+    marginLeft: 46,
   },
   group1Row: {
     height: 260,
     flexDirection: "row",
-    marginTop: 42,
-    marginLeft: 29,
-    marginRight: 29
+    flexWrap: "wrap",
+    marginTop: 25,
+    alignItems: "center",
+    justifyContent: "center",
   },
   group3: {
     width: 172,
     height: 260,
     marginTop: 23,
-    marginLeft: 29
+    marginLeft: 29,
   },
   rect4: {
     width: 172,
@@ -523,24 +632,24 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image3: {
     width: 140,
     height: 139,
     borderRadius: 25,
     marginTop: 13,
-    marginLeft: 16
+    marginLeft: 16,
   },
   kariPlants3: {
     color: "rgba(48,64,34,1)",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46
+    marginLeft: 46,
   },
   materialButtonViolet77: {
     height: 39,
@@ -549,7 +658,7 @@ const styles = StyleSheet.create({
     left: 25,
     top: 169,
     borderRadius: 13,
-    backgroundColor: "rgba(34,139,34,1)"
+    backgroundColor: "rgba(34,139,34,1)",
   },
   materialButtonViolet7: {
     height: 39,
@@ -558,13 +667,13 @@ const styles = StyleSheet.create({
     left: 25,
     top: 169,
     borderRadius: 13,
-    backgroundColor: "#3F51B5"
+    backgroundColor: "#3F51B5",
   },
   backgroundStack: {
     backgroundColor: "white",
     width: 415,
-    height: 897
-  }
+    height: 897,
+  },
 });
 
 export default AdminForestDetails;
