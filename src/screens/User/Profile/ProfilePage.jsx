@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     width: 351,
     marginTop: 90,
     marginLeft: 27,
-    backgroundColor: "rgba(159,241,109,1)",
+    backgroundColor: "rgba(184,233,134,1)",
   },
   pitcherPlantInSriLanka: {
     borderRadius: 26,
