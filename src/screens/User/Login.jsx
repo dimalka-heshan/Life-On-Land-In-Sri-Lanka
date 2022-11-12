@@ -1,41 +1,119 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+import React, { Component, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
+function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, seterror] = useState("");
 
-function Login({navigation}) {
+  const login = async (e) => {
+    e.preventDefault();
+
+    if (email === "" || password === "") {
+      seterror("Please fill all the fields!");
+    } else {
+      try {
+        const user = {
+          email,
+          password,
+        };
+
+        const EmailRegex = new RegExp(
+          "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
+        );
+
+        if (!EmailRegex.test(email)) {
+          seterror("Please enter a valid email!");
+        } else {
+          await axios
+            .post(
+              "https://life-on-land-backend.azurewebsites.net/api/user/login",
+              user
+            )
+            .then((res) => {
+              if (res.data.role === "Admin") {
+                navigation.navigate("AdminHome");
+              } else {
+                navigation.navigate("MyTabs");
+              }
+              AsyncStorage.setItem("token", res.data.token);
+              AsyncStorage.setItem("role", res.data.role);
+            });
+        }
+      } catch (error) {
+        console.log(error);
+        seterror(error.response.data.message);
+      }
+    }
+  };
+
+  const onRedirectToSignUp = () => {
+    navigation.navigate("Registration");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-      <Image
-                  source={require("../../assets/images/Screenshot1-removebg-preview.png")}
-                  resizeMode="contain"
-                  style={styles.image3}
-      ></Image>
+        <Image
+          source={require("../../assets/images/Screenshot1-removebg-preview.png")}
+          resizeMode="contain"
+          style={styles.image3}
+        ></Image>
         <Text style={styles.letsSaveTheWorld}>Let’s Save the World</Text>
         <Text style={styles.ifYoureAnExistingUserPleaseLoginToTheAppFromHere}>
           If you’re an existing user, Please login to the app from here!
         </Text>
         <Text style={styles.dontHaveAnAccountYetSignUp}>
-          Don’t have an account yet ?         
+          Don’t have an account yet ?
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
-          <Text style={styles.signUp}>Sign Up</Text>
-        </TouchableOpacity>
+
+        <View>
+          <Text onPress={onRedirectToSignUp} style={styles.signUp}>
+            Sign Up
+          </Text>
+        </View>
+
         <View style={[styles.containertxt1, styles.materialUnderlineTextbox15]}>
-              <TextInput
-                placeholder="Enter your Email"
-                style={styles.inputStyle}
-              ></TextInput>
+          <TextInput
+            placeholder="Enter your Email"
+            style={styles.inputStyle}
+            onChangeText={(text) => setEmail(text)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containertxt2, styles.materialUnderlineTextbox16]}>
-              <TextInput
-                placeholder="Enter your Password"
-                style={styles.inputStyle}
-              ></TextInput>
+          <TextInput
+            placeholder="Enter your Password"
+            onChangeText={(text) => setPassword(text)}
+            style={styles.inputStyle}
+            secureTextEntry={true}
+          ></TextInput>
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate('MyTabs')} style={[styles.containerbtn, styles.materialButtonViolet12]}>
+        {error ? (
+          <View style={styles.errorContainer}>
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          </View>
+        ) : (
+          ""
+        )}
+
+        <TouchableOpacity
+          onPress={login}
+          style={[styles.containerbtn, styles.materialButtonViolet12]}
+        >
           <Text style={styles.logIn}>Log in</Text>
         </TouchableOpacity>
       </View>
@@ -44,9 +122,29 @@ function Login({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: "white",
+    fontSize: 14,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  errorBox: {
+    backgroundColor: "red",
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 20,
+    width: 355,
+  },
+  errorContainer: {
+    marginTop: -100,
+    Width: Dimensions.get("window").width,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: -21,
+  },
   container: {
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   background: {
     position: "absolute",
@@ -55,7 +153,7 @@ const styles = StyleSheet.create({
     top: 0,
     backgroundColor: "transparent",
     borderColor: "transparent",
-    left: 0
+    left: 0,
   },
   letsSaveTheWorld: {
     position: "absolute",
@@ -69,7 +167,7 @@ const styles = StyleSheet.create({
   },
   signUp: {
     color: "rgba(74,144,226,1)",
-    marginTop: 378,
+    marginTop: 415,
     fontWeight: "bold",
     marginLeft: 170,
   },
@@ -86,7 +184,7 @@ const styles = StyleSheet.create({
   },
   dontHaveAnAccountYetSignUp: {
     position: "absolute",
-    top: 657,
+    top: 695,
     left: 57,
     height: 56,
     width: 268,
@@ -101,12 +199,12 @@ const styles = StyleSheet.create({
     left: 34,
     height: 187,
     width: 340,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   rectangle32: {
     height: 187,
     width: 340,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   materialUnderlineTextbox15: {
     height: 48,
@@ -116,7 +214,7 @@ const styles = StyleSheet.create({
     top: 435,
     borderRadius: 100,
     borderWidth: 2,
-    borderColor: "rgba(65,117,5,1)"
+    borderColor: "rgba(65,117,5,1)",
   },
   materialUnderlineTextbox16: {
     height: 45,
@@ -126,20 +224,20 @@ const styles = StyleSheet.create({
     top: 495,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 67
+    borderRadius: 67,
   },
   materialButtonViolet12: {
     height: 60,
     width: 364,
     position: "absolute",
     left: 24,
-    top: 583,
+    top: 560,
     backgroundColor: "rgba(34,139,34,1)",
-    borderRadius: 84
+    borderRadius: 84,
   },
   backgroundStack: {
     width: 414,
-    height: 896
+    height: 896,
   },
   containerbtn: {
     backgroundColor: "#3F51B5",
@@ -151,14 +249,14 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   logIn: {
     color: "#fff",
@@ -170,7 +268,7 @@ const styles = StyleSheet.create({
     marginLeft: -9,
     backgroundColor: "transparent",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   containertxt2: {
     borderBottomWidth: 1,
@@ -178,7 +276,7 @@ const styles = StyleSheet.create({
     marginLeft: -7,
     backgroundColor: "transparent",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -190,14 +288,14 @@ const styles = StyleSheet.create({
     left: 18,
     paddingTop: 6,
     paddingBottom: 8,
-    textAlign: "left"
+    textAlign: "left",
   },
   image3: {
     marginTop: 100,
     marginLeft: -2,
     height: 200,
     width: 400,
-  }
+  },
 });
 
 export default Login;

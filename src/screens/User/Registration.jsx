@@ -1,15 +1,71 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+} from "react-native";
+import axios from "axios";
 
-function Registration({navigation}) {
+function Registration({ navigation }) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const signup = async (e) => {
+    e.preventDefault();
+
+    if (
+      fullName === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      alert("Please fill all the fields!");
+    } else if (password !== confirmPassword) {
+      alert("Password does not match!");
+    } else if (password.length < 6) {
+      alert("Password must be at least 6 characters!");
+    } else {
+      try {
+        const user = {
+          fullName,
+          email,
+          password,
+          role: "User",
+        };
+        axios
+          .post(
+            "https://life-on-land-backend.azurewebsites.net/api/user/register",
+            user
+          )
+          .then((res) => {
+            if (res.data.success) {
+              alert("Registration Successful");
+              navigation.navigate("Login");
+            } else {
+              alert(res.data.message);
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-      <TouchableOpacity onPress={() => navigation.navigate('AdminTabs')}><Image
-                  source={require("../../assets/images/Screenshot1-removebg-preview.png")}
-                  resizeMode="contain"
-                  style={styles.image3}
-      ></Image></TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AdminTabs")}>
+          <Image
+            source={require("../../assets/images/Screenshot1-removebg-preview.png")}
+            resizeMode="contain"
+            style={styles.image3}
+          ></Image>
+        </TouchableOpacity>
 
         <Text style={styles.letsSaveTheWorld}>Let’s Save the World</Text>
         <Text
@@ -22,40 +78,55 @@ function Registration({navigation}) {
         </Text>
 
         <View style={[styles.containerbtn, styles.materialUnderlineTextbox1]}>
-            <TextInput
-                placeholder="Enter your Email"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter your Email"
+            style={styles.inputStyle}
+            onChangeText={(text) => setEmail(text)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containerbtn, styles.materialUnderlineTextbox2]}>
-            <TextInput
-                placeholder="Enter your Email"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter your Password"
+            style={styles.inputStyle}
+            secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containerbtn, styles.materialUnderlineTextbox20]}>
-            <TextInput
-                placeholder="Enter your Email"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter your Full Name"
+            style={styles.inputStyle}
+            onChangeText={(text) => setFullName(text)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containerbtn, styles.materialUnderlineTextbox21]}>
-            <TextInput
-                placeholder="Enter your Email"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter Confirm your Password"
+            style={styles.inputStyle}
+            secureTextEntry={true}
+            onChangeText={(text) => setConfirmPassword(text)}
+          ></TextInput>
         </View>
 
-        <TouchableOpacity style={[styles.containertttt, styles.materialButtonViolet16]}>
-            <Text style={styles.register}>Register</Text>
+        <TouchableOpacity
+          style={[styles.containertttt, styles.materialButtonViolet16]}
+        >
+          <Text style={styles.register} onPress={signup}>
+            Register
+          </Text>
         </TouchableOpacity>
         <View>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.signUp}>Sign In</Text>
-          </TouchableOpacity> */}
+          <View>
+            <Text
+              onPress={() => navigation.navigate("Login")}
+              style={styles.signUp}
+            >
+              Sign In
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -65,7 +136,7 @@ function Registration({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   background: {
     position: "absolute",
@@ -74,14 +145,14 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: "transparent",
     borderColor: "transparent",
-    right: 0
+    right: 0,
   },
   button: {
     position: "absolute",
     top: 713,
     left: 26,
     height: 60,
-    width: 364
+    width: 364,
   },
   background1: {
     position: "absolute",
@@ -90,7 +161,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   getStarted: {
     position: "absolute",
@@ -117,7 +188,7 @@ const styles = StyleSheet.create({
   },
   background1Stack: {
     width: 364,
-    height: 60
+    height: 60,
   },
   letsSaveTheWorld: {
     position: "absolute",
@@ -156,7 +227,7 @@ const styles = StyleSheet.create({
     left: 34,
     height: 187,
     width: 340,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   materialUnderlineTextbox1: {
     height: 48,
@@ -166,7 +237,7 @@ const styles = StyleSheet.create({
     top: 490,
     borderRadius: 100,
     borderWidth: 2,
-    borderColor: "rgba(65,117,5,1)"
+    borderColor: "rgba(65,117,5,1)",
   },
   materialUnderlineTextbox2: {
     height: 48,
@@ -176,7 +247,7 @@ const styles = StyleSheet.create({
     top: 556,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 67
+    borderRadius: 67,
   },
   materialUnderlineTextbox20: {
     height: 48,
@@ -186,7 +257,7 @@ const styles = StyleSheet.create({
     top: 425,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: "rgba(65,117,5,1)"
+    borderColor: "rgba(65,117,5,1)",
   },
   materialUnderlineTextbox21: {
     height: 48,
@@ -196,7 +267,7 @@ const styles = StyleSheet.create({
     top: 624,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 73
+    borderRadius: 73,
   },
   materialButtonViolet16: {
     height: 60,
@@ -205,7 +276,7 @@ const styles = StyleSheet.create({
     left: 25,
     top: 722,
     borderRadius: 100,
-    backgroundColor: "rgba(65,117,5,1)"
+    backgroundColor: "rgba(65,117,5,1)",
   },
   materialButtonViolet17: {
     height: 29,
@@ -217,15 +288,15 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(255,255,255,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 5,
     shadowOpacity: 1,
-    shadowRadius: 0
+    shadowRadius: 0,
   },
   backgroundStack: {
     height: 896,
-    marginTop: -1
+    marginTop: -1,
   },
   containerbtn: {
     marginTop: -28,
@@ -234,7 +305,7 @@ const styles = StyleSheet.create({
     borderColor: "#D9D5DC",
     backgroundColor: "transparent",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -246,7 +317,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     paddingTop: 7,
     paddingBottom: 8,
-    textAlign: "left"
+    textAlign: "left",
   },
   containertttt: {
     backgroundColor: "#3F51B5",
@@ -254,19 +325,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 2,
-    marginTop:-55,
+    marginTop: -55,
     marginLeft: -10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   register: {
     color: "#fff",
@@ -277,7 +348,7 @@ const styles = StyleSheet.create({
     marginLeft: 1,
     height: 200,
     width: 400,
-  }
+  },
 });
 
 export default Registration;
