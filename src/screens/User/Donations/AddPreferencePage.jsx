@@ -1,31 +1,62 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { Component, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import axios from "axios";
 
-function AddPreferencePage({navigation}) {
+function AddPreferencePage({ navigation }) {
+  const [preference, setPreference] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const addPreference = async () => {
+    if (preference == "" || notes == "") {
+      Alert.alert("Error", "Please fill all the fields", [
+        {
+          text: "Ok",
+        },
+      ]);
+    } else {
+      navigation.navigate("Payment", {
+        preference: preference,
+        notes: notes,
+      });
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.frame7}>
-      <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>My Donations</Text>
+        <View style={styles.frame61}>
+          <Text style={styles.sriLankanLeopard}>Donations</Text>
         </View>
       </View>
       <View style={[styles.containerttt, styles.materialUnderlineTextbox18]}>
-      <TextInput
-        placeholder="My Preferances"
-        style={styles.inputStyle}
-      ></TextInput>
-    </View>
-    <View style={[styles.containerttt, styles.materialUnderlineTextbox10]}>
-      <TextInput
-        placeholder="Notes"
-        multiline={true}
-        numberOfLines={10}
-        style={styles.inputStyle1}
-      ></TextInput>
-    </View>
-    <TouchableOpacity onPress={() => navigation.navigate('Payment')} style={[styles.containerbtn, styles.materialButtonViolet15]}>
-      <Text style={styles.proceedPayment}>Proceed Payment</Text>
-    </TouchableOpacity>
+        <TextInput
+          placeholder="My Preferances"
+          style={styles.inputStyle}
+          onChangeText={(text) => setPreference(text)}
+        ></TextInput>
+      </View>
+      <View style={[styles.containerttt, styles.materialUnderlineTextbox10]}>
+        <TextInput
+          placeholder="Notes"
+          multiline={true}
+          numberOfLines={10}
+          style={styles.inputStyle1}
+          onChangeText={(text) => setNotes(text)}
+        ></TextInput>
+      </View>
+      <TouchableOpacity
+        onPress={addPreference}
+        style={[styles.containerbtn, styles.materialButtonViolet15]}
+      >
+        <Text style={styles.proceedPayment}>Proceed Payment</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -33,16 +64,16 @@ function AddPreferencePage({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
-    marginLeft:-11,
-    flex: 1
+    marginLeft: -11,
+    flex: 1,
   },
   containerttt: {
     borderBottomWidth: 1,
     borderColor: "#D9D5DC",
     backgroundColor: "transparent",
     flexDirection: "row",
-    marginTop:-40,
-    alignItems: "center"
+    marginTop: -40,
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -50,10 +81,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: "stretch",
     flex: 1,
-    marginLeft:15,
+    marginLeft: 15,
     lineHeight: 16,
     paddingTop: 5,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   inputStyle1: {
     color: "#000",
@@ -62,10 +93,10 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     flex: 1,
     textAlignVertical: "top",
-    marginLeft:15,
+    marginLeft: 15,
     lineHeight: 16,
     paddingTop: 10,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   frame61: {
     position: "absolute",
@@ -74,10 +105,10 @@ const styles = StyleSheet.create({
     left: -3,
     height: 55,
     width: 351,
-    backgroundColor: "rgba(184,233,134,1)"
+    backgroundColor: "rgba(184,233,134,1)",
   },
   sriLankanLeopard: {
-    fontWeight:"bold",
+    fontWeight: "bold",
     height: 25,
     width: 305,
     backgroundColor: "transparent",
@@ -85,7 +116,7 @@ const styles = StyleSheet.create({
     color: "rgba(48,64,34,1)",
     fontSize: 20,
     marginTop: 13,
-    marginLeft: 23
+    marginLeft: 23,
   },
   frame7: {
     height: 64,
@@ -93,12 +124,12 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.15)",
     shadowOffset: {
       height: 27,
-      width: 0
+      width: 0,
     },
     shadowRadius: 70.56399536132812,
     shadowOpacity: 1,
     marginTop: 77,
-    marginLeft: 33
+    marginLeft: 33,
   },
   frame7ClippingMask: {
     position: "absolute",
@@ -107,14 +138,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame71: {
     position: "absolute",
     top: 0,
     left: 0,
     height: 64,
-    width: 351
+    width: 351,
   },
   containerbtn: {
     backgroundColor: "#3F51B5",
@@ -125,20 +156,19 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   proceedPayment: {
     color: "#fff",
-    fontSize: 18
+    fontSize: 18,
   },
-
 
   donation: {
     height: 52,
@@ -148,11 +178,11 @@ const styles = StyleSheet.create({
     color: "rgba(0,0,0,1)",
     fontSize: 18,
     marginTop: 22,
-    marginLeft: 16
+    marginLeft: 16,
   },
   frame7ClippingMaskStack: {
     width: 351,
-    height: 64
+    height: 64,
   },
   materialUnderlineTextbox18: {
     height: 43,
@@ -161,7 +191,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 82,
     marginTop: 40,
-    marginLeft: 27
+    marginLeft: 27,
   },
   materialUnderlineTextbox10: {
     height: 300,
@@ -170,13 +200,13 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 25,
     marginTop: 40,
-    marginLeft: 27
+    marginLeft: 27,
   },
   group: {
     width: 360,
     height: 331,
     marginTop: 25,
-    marginLeft: 28
+    marginLeft: 28,
   },
   rect2: {
     width: 360,
@@ -184,7 +214,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1)",
     borderRadius: 22,
     borderWidth: 2,
-    borderColor: "rgba(65,117,5,1)"
+    borderColor: "rgba(65,117,5,1)",
   },
   note: {
     color: "rgba(155,155,155,1)",
@@ -192,7 +222,7 @@ const styles = StyleSheet.create({
     width: 351,
     fontSize: 16,
     marginTop: 17,
-    marginLeft: 5
+    marginLeft: 5,
   },
   materialButtonViolet15: {
     height: 60,
@@ -200,8 +230,8 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     backgroundColor: "rgba(65,117,5,1)",
     marginTop: 63,
-    marginLeft: 26
-  }
+    marginLeft: 26,
+  },
 });
 
 export default AddPreferencePage;
