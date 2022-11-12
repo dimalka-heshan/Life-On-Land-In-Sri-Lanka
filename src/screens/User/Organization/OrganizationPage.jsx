@@ -3,16 +3,24 @@ import { StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput 
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import EntypoIcon from "react-native-vector-icons/Entypo";
 
-function OrganizationPage(props) {
+function OrganizationPage({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.group15}>
         <View style={styles.group13}>
           <View style={styles.backgroundStack}>
-          <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>Organizations</Text>
-        </View>
+
+            <EntypoIcon
+              name="circle-with-plus"
+              onPress={() => navigation.navigate('AddOrganizationPage')}
+              style={styles.icon12}
+            ></EntypoIcon>
+
+              <View style={styles.frame61}>
+                  <Text style={styles.sriLankanLeopard}>Organizations</Text>
+                </View>
                 <View style={[styles.container123, styles.materialSearchBar]}>
                   <View style={styles.rect11}>
                     <View style={styles.inputStyleStack}>
@@ -30,6 +38,7 @@ function OrganizationPage(props) {
               <ScrollView
                 contentContainerStyle={styles.scrollArea_contentContainerStyle}
               >
+                <TouchableOpacity onPress={() => navigation.navigate('SpecificOrgPage')}>
                 <View style={styles.group16}>
                   <View style={styles.rect}>
                     <View style={styles.image1Row}>
@@ -56,10 +65,12 @@ function OrganizationPage(props) {
                           ></FontAwesomeIcon>
                           <Text style={styles.sriLanka1}>0795846235</Text>
                         </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('UpdateOrganizationPage')}>
                         <FontAwesomeIcon
                           name="pencil"
                           style={styles.icon4}
                         ></FontAwesomeIcon>
+                        </TouchableOpacity>
                       </View>
                       <IoniconsIcon
                         name="md-trash"
@@ -68,6 +79,8 @@ function OrganizationPage(props) {
                     </View>
                   </View>
                 </View>
+                </TouchableOpacity>
+
                 <View style={styles.group17}>
                   <View style={styles.rect1}>
                     <View style={styles.image2Row}>
@@ -98,7 +111,9 @@ function OrganizationPage(props) {
                     </View>
                   </View>
                 </View>
+
               </ScrollView>
+
             </View>
           </View>
         </View>
@@ -121,6 +136,14 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 3,
       height: 3
+    },
+    icon10: {
+      color: "rgba(208,2,27,1)",
+      fontSize: 35,
+      height: 38,
+      width: 22,
+      marginLeft: 1,
+      marginTop: 83
     },
     elevation: 5,
     shadowOpacity: 1,
@@ -415,12 +438,24 @@ const styles = StyleSheet.create({
     marginRight: 74
   },
   icon12: {
-    color: "rgba(126,211,33,1)",
-    fontSize: 28,
-    height: 28,
-    width: 24,
-    marginTop: 6,
-    marginLeft: 135
+    color: "#9FF16D",
+    fontSize: 52,
+    elevation: 10,
+    height: 52,
+    width: 52,
+    marginTop: 550,
+    zIndex: 999,
+    marginLeft: 335
+  },
+  icon1222: {
+    color: "transparent",
+    fontSize: 52,
+    elevation: 10,
+    height: 52,
+    width: 52,
+    marginTop: 550,
+    zIndex: 999,
+    marginLeft: 335
   },
   environmantal2Column: {
     width: 175,
