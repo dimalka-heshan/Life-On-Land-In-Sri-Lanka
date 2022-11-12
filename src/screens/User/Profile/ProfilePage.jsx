@@ -158,9 +158,6 @@ function ProfilePage(props) {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <View style={styles.frame3Stack}>
-        <Text style={styles.nimnaThiranjaya}>Nimna Thiranjaya</Text>
-      </View> */}
 
       <View style={styles.frame61}>
         <View style={styles.logOutContainer}>
@@ -278,7 +275,6 @@ const styles = StyleSheet.create({
     width: 38,
   },
   nimnaThiranjaya3: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     fontSize: 16,
     marginLeft: 15,
@@ -306,7 +302,6 @@ const styles = StyleSheet.create({
     marginLeft: 1,
   },
   enviromentalist: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     fontSize: 16,
     marginLeft: 15,
@@ -320,7 +315,6 @@ const styles = StyleSheet.create({
     marginRight: 161,
   },
   loremIpsum: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     height: 99,
     width: 262,

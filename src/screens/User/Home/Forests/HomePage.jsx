@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import Svg, { Path } from "react-native-svg";
 
 function HomePage({navigation}) {
   return (

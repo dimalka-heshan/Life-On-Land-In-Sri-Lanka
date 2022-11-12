@@ -17,9 +17,15 @@ import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
 import Organization from "../screens/User/Organization/Organization";
 import Profile from "../screens/User/Profile/ProfilePage";
 import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
-import Donations from '../screens/User/Donations/Donations'
+
+import Donations from '../screens/User/Donations/Donations';
+import MyDonationPage from '../screens/User/Donations/MyDonationPage';
+import AddPreferencePage from '../screens/User/Donations/AddPreferencePage';
+import Payment from '../screens/User/Donations/Payment';
+import PaymentSuccessful from '../screens/User/Donations/PaymentSuccessful';
 
 const HomeStack = createNativeStackNavigator();
+const DonationStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -67,6 +73,48 @@ function HomeStackScreen() {
       }} 
      />
     </HomeStack.Navigator>
+   );
+ }
+
+ function DonationStackScreen() {
+  return (
+    <DonationStack.Navigator>
+     <DonationStack.Screen 
+        name="Donations" 
+        component={Donations}           
+        options={{
+            headerShown: false,
+        }}
+      />   
+      <DonationStack.Screen 
+        name="MyDonationPage" 
+        component={MyDonationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />   
+      <DonationStack.Screen 
+        name="AddPreferencePage" 
+        component={AddPreferencePage}           
+        options={{
+            headerShown: false,
+        }}
+      />  
+      <DonationStack.Screen 
+        name="Payment" 
+        component={Payment}           
+        options={{
+            headerShown: false,
+        }}
+      />    
+      <DonationStack.Screen 
+        name="PaymentSuccessful" 
+        component={PaymentSuccessful}           
+        options={{
+            headerShown: false,
+        }}
+      />     
+    </DonationStack.Navigator>
    );
  }
 
@@ -147,8 +195,8 @@ function MyTabs() {
       />
             
       <Tab.Screen 
-        name="Donations" 
-        component={Donations} 
+        name="DonationStackScreen" 
+        component={DonationStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
