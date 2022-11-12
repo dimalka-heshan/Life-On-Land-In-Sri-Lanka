@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity,Image } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
-function ProfilePage(props) {
+function ProfilePage({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.rect}>
@@ -28,7 +28,7 @@ function ProfilePage(props) {
           ever since the 1500s
         </Text>
         <View style={styles.materialButtonPrimary1Row}>
-        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonPrimary1]}>
+        <TouchableOpacity onPress={() => navigation.navigate('UpdateUserProfile')} style={[styles.containerbtn2, styles.materialButtonPrimary1]}>
           <Text style={styles.approve}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.containerbtn1, styles.materialButtonDanger1]}>
