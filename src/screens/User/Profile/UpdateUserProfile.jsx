@@ -1,77 +1,181 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import React, { Component, useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-
 function UpdateUserProfile(props) {
+  const [fullName, setfullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [Occupation, setOccupation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [description, setDescription] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+
+  const GetUserData = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    await axios
+      .get("https://life-on-land-backend.azurewebsites.net/api/user/profile", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          setfullName(res.data.user.fullName);
+          setEmail(res.data.user.email);
+          setOccupation(res.data.user.Occupation);
+          setPhoneNumber(res.data.user.phoneNumber);
+          setDescription(res.data.user.description);
+          setProfileImage(res.data.user.profileImage);
+        }
+      });
+  };
+
+  useEffect(() => {
+    GetUserData();
+  }, []);
+
+  const UpdateUser = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    await axios
+      .patch(
+        "https://life-on-land-backend.azurewebsites.net/api/user/profileUpdate",
+        {
+          fullName,
+          Occupation,
+          phoneNumber,
+          description,
+          profileImage,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.status) {
+          Alert.alert("Success", "User Updated Successfully", [
+            {
+              text: "OK",
+              onPress: () => props.navigation.push("Profile"),
+            },
+          ]);
+        }
+      })
+      .catch((err) => {
+        Alert.alert("Error", "Something went wrong", [
+          {
+            text: "OK",
+            onPress: () => props.navigation.push("Profile"),
+          },
+        ]);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.group2}>
         <View style={styles.group}>
-        <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>Update User Profile</Text>
-        </View>
+          <View style={styles.frame61}>
+            <Text style={styles.sriLankanLeopard}>Update User Profile</Text>
+          </View>
           {/* <MaterialUnderlineTextbox28
             style={styles.materialUnderlineTextbox28}
           ></MaterialUnderlineTextbox28> */}
-          <View style={[styles.container222, styles.materialUnderlineTextbox28]}>
+          <View
+            style={[styles.container222, styles.materialUnderlineTextbox28]}
+          >
             <TextInput
-              placeholder="Nimna Thiranjaya"
+              placeholder="Enter Full Name"
+              value={fullName}
               style={styles.inputStyle}
+              onChangeText={(text) => setfullName(text)}
             ></TextInput>
           </View>
           {/* <MaterialUnderlineTextbox29
             style={styles.materialUnderlineTextbox29}
           ></MaterialUnderlineTextbox29> */}
-          <View style={[styles.container222, styles.materialUnderlineTextbox29]}>
+          <View
+            style={[styles.container222, styles.materialUnderlineTextbox29]}
+          >
             <TextInput
-              placeholder="Nimna Thiranjaya"
+              placeholder="Enter Your Email"
               style={styles.inputStyle}
+              value={email}
             ></TextInput>
           </View>
           {/* <MaterialUnderlineTextbox30
             style={styles.materialUnderlineTextbox30}
           ></MaterialUnderlineTextbox30> */}
-          <View style={[styles.container222, styles.materialUnderlineTextbox30]}>
+          <View
+            style={[styles.container222, styles.materialUnderlineTextbox30]}
+          >
             <TextInput
-              placeholder="Nimna Thiranjaya"
+              placeholder="Enter Your Occupation"
               style={styles.inputStyle}
+              value={Occupation}
+              onChangeText={(text) => setOccupation(text)}
             ></TextInput>
           </View>
-          <View style={[styles.container222, styles.materialUnderlineTextbox311]}>
+          <View
+            style={[styles.container222, styles.materialUnderlineTextbox311]}
+          >
             <TextInput
-              placeholder="Nimna Thiranjaya"
+              placeholder="Enter About Yourself"
               multiline={true}
               numberOfLines={10}
               style={styles.inputStyle}
+              value={description}
+              onChangeText={(text) => setDescription(text)}
             ></TextInput>
           </View>
           {/* <MaterialUnderlineTextbox32
             style={styles.materialUnderlineTextbox32}
           ></MaterialUnderlineTextbox32> */}
-          <View style={[styles.container222, styles.materialUnderlineTextbox32]}>
+          <View
+            style={[styles.container222, styles.materialUnderlineTextbox32]}
+          >
             <TextInput
               placeholder="Enter Mobile Number"
               style={styles.inputStyle}
+              value={phoneNumber}
+              onChangeText={(text) => setPhoneNumber(text)}
             ></TextInput>
           </View>
           <View style={styles.materialUnderlineTextbox33Stack}>
             {/* <MaterialUnderlineTextbox2
               style={styles.materialUnderlineTextbox33}
             ></MaterialUnderlineTextbox2> */}
-            <View style={[styles.container222, styles.materialUnderlineTextbox33]}>
-            <TextInput
-              placeholder="Choose Profile Picture"
-              style={styles.inputStyle}
-            ></TextInput>
-          </View>
+            <View
+              style={[styles.container222, styles.materialUnderlineTextbox33]}
+            >
+              <TextInput
+                placeholder="Choose Profile Picture"
+                style={styles.inputStyle}
+              ></TextInput>
+            </View>
             <Icon name="plus-circle" style={styles.icon1}></Icon>
           </View>
           {/* <MaterialButtonViolet10
             style={styles.materialButtonViolet1}
           ></MaterialButtonViolet10> */}
-          <TouchableOpacity style={[styles.container111, styles.materialButtonViolet1]}>
-            <Text style={styles.update}>Update</Text>
+          <TouchableOpacity
+            style={[styles.container111, styles.materialButtonViolet1]}
+          >
+            <Text style={styles.update} onPress={UpdateUser}>
+              Update
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -81,9 +185,9 @@ function UpdateUserProfile(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft:-12,
+    marginLeft: -12,
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   frame61: {
     position: "absolute",
@@ -92,10 +196,10 @@ const styles = StyleSheet.create({
     left: 33,
     height: 55,
     width: 351,
-    backgroundColor: "rgba(184,233,134,1)"
+    backgroundColor: "rgba(184,233,134,1)",
   },
   sriLankanLeopard: {
-    fontWeight:"bold",
+    fontWeight: "bold",
     height: 25,
     width: 305,
     backgroundColor: "transparent",
@@ -103,31 +207,31 @@ const styles = StyleSheet.create({
     color: "rgba(48,64,34,1)",
     fontSize: 20,
     marginTop: 13,
-    marginLeft: 23
+    marginLeft: 23,
   },
   group2: {
     width: 415,
     height: 896,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   group: {
     width: 415,
     height: 896,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   rect1: {
     width: 351,
     height: 72,
     backgroundColor: "rgba(230,255,214,1)",
     marginTop: 79,
-    marginLeft: 32
+    marginLeft: 32,
   },
   updateProfile: {
     fontFamily: "roboto-700",
     color: "#121212",
     fontSize: 20,
     marginTop: 24,
-    marginLeft: 112
+    marginLeft: 112,
   },
   materialUnderlineTextbox28: {
     height: 48,
@@ -136,7 +240,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 29,
     marginTop: 180,
-    marginLeft: 28
+    marginLeft: 28,
   },
   materialUnderlineTextbox29: {
     height: 48,
@@ -145,7 +249,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 29,
     marginTop: 15,
-    marginLeft: 28
+    marginLeft: 28,
   },
   materialUnderlineTextbox30: {
     height: 48,
@@ -154,7 +258,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 29,
     marginTop: 15,
-    marginLeft: 28
+    marginLeft: 28,
   },
   rect2: {
     width: 356,
@@ -164,23 +268,23 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 26,
     marginTop: 19,
-    marginLeft: 30
+    marginLeft: 30,
   },
   group3: {
     width: 325,
     height: 147,
     justifyContent: "center",
     marginTop: 11,
-    marginLeft: 15
+    marginLeft: 15,
   },
   group4: {
     width: 325,
     height: 147,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   group5: {
     width: 325,
-    height: 147
+    height: 147,
   },
   loremIpsum: {
     fontFamily: "roboto-regular",
@@ -188,7 +292,7 @@ const styles = StyleSheet.create({
     height: 147,
     width: 325,
     fontSize: 16,
-    textAlign: "left"
+    textAlign: "left",
   },
   materialUnderlineTextbox32: {
     height: 48,
@@ -197,7 +301,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 39,
     marginTop: 14,
-    marginLeft: 28
+    marginLeft: 28,
   },
   materialUnderlineTextbox311: {
     height: 100,
@@ -206,7 +310,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 25,
     marginTop: 14,
-    marginLeft: 28
+    marginLeft: 28,
   },
   materialUnderlineTextbox33: {
     height: 50,
@@ -216,7 +320,7 @@ const styles = StyleSheet.create({
     top: 0,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 100
+    borderRadius: 100,
   },
   icon1: {
     top: 5,
@@ -225,13 +329,13 @@ const styles = StyleSheet.create({
     color: "rgba(34,139,34,1)",
     fontSize: 40,
     height: 40,
-    width: 34
+    width: 34,
   },
   materialUnderlineTextbox33Stack: {
     width: 351,
     height: 50,
     marginTop: 17,
-    marginLeft: 30
+    marginLeft: 30,
   },
   materialButtonViolet1: {
     height: 60,
@@ -239,7 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 91,
     backgroundColor: "rgba(34,139,34,1)",
     marginTop: 33,
-    marginLeft: 27
+    marginLeft: 27,
   },
   container111: {
     backgroundColor: "#3F51B5",
@@ -250,25 +354,25 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   update: {
     color: "#fff",
-    fontSize: 18
+    fontSize: 18,
   },
   container222: {
     borderBottomWidth: 1,
     borderColor: "#D9D5DC",
     backgroundColor: "transparent",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -280,7 +384,7 @@ const styles = StyleSheet.create({
     flex: 1,
     lineHeight: 16,
     paddingTop: 11,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
 });
 

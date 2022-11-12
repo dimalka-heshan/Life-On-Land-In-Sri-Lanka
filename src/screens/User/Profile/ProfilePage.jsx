@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ScrollView,
 } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
@@ -121,11 +122,31 @@ function ProfilePage(props) {
             {userDetails.Occupation ? userDetails.Occupation : ""}
           </Text>
         </View>
-        <Text style={styles.loremIpsum}>
-          {userDetails.description
-            ? userDetails.description
-            : "Please Update Your Bio"}
-        </Text>
+        {/* Phone number */}
+        <View style={styles.icon2Row}>
+          {userDetails.phoneNumber ? (
+            <FontAwesomeIcon
+              name="phone"
+              style={styles.icon3}
+            ></FontAwesomeIcon>
+          ) : (
+            ""
+          )}
+          <Text style={styles.enviromentalist}>
+            {userDetails.phoneNumber ? userDetails.phoneNumber : ""}
+          </Text>
+        </View>
+        <View style={styles.scrollArea}>
+          <ScrollView
+            contentContainerStyle={styles.scrollArea_contentContainerStyle}
+          >
+            <Text style={styles.loremIpsum}>
+              {userDetails.description
+                ? userDetails.description
+                : "Please Update Your Bio"}
+            </Text>
+          </ScrollView>
+        </View>
         <View style={styles.materialButtonPrimary1Row}>
           {/* <MaterialButtonPrimary1
             style={styles.materialButtonPrimary1}
@@ -135,6 +156,7 @@ function ProfilePage(props) {
           ></MaterialButtonDanger1> */}
           <TouchableOpacity
             style={[styles.containerbtn2, styles.materialButtonPrimary1]}
+            onPress={() => props.navigation.push("UpdateUserProfile")}
           >
             <Text style={styles.approve}>
               <FontAwesomeIcon
@@ -182,6 +204,16 @@ function ProfilePage(props) {
 }
 
 const styles = StyleSheet.create({
+  scrollArea: {
+    marginTop: 10,
+    width: 400,
+    height: 80,
+  },
+  scrollArea_contentContainerStyle: {
+    height: 150,
+    width: 300,
+    textAlign: "center",
+  },
   logoutButton: {
     width: 100,
     backgroundColor: "white",
@@ -337,7 +369,7 @@ const styles = StyleSheet.create({
   materialButtonPrimary1Row: {
     height: 34,
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 20,
     marginLeft: 65,
     marginRight: 58,
   },
