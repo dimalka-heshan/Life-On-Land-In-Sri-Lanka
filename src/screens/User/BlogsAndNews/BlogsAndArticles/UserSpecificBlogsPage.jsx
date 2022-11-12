@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
-function AdminSpecificNews(props) {
+function UserSpecificBlogsPage(props) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
       <View style={styles.frame61}>
-                  <Text style={styles.sriLankanLeopard}>News</Text>
+                  <Text style={styles.sriLankanLeopard}>Blogs And Articles</Text>
         </View>
         <Text style={styles.loremIpsum1502}>
           Wildlife diplomacy takes wing, government considers Sri Lankan
         </Text>
         <Image
-          source={require("../../../assets/images/461931-landscape-samurai1.jpg")}
+          source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
           resizeMode="contain"
           style={styles.image1}
         ></Image>
@@ -32,14 +32,6 @@ function AdminSpecificNews(props) {
               containing Lorem Ipsum passages,
             </Text>
           </ScrollView>
-        </View>
-        <View style={styles.materialButtonPrimary1Row}>
-                          <TouchableOpacity style={[styles.containerbtn1, styles.materialButtonPrimary1]}>
-                            <Text style={styles.approve}>Approve</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonDanger1]}>
-                            <Text style={styles.decline}>Decline</Text>
-                          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -145,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   loremIpsum1502: {
-    top: 35,
+    top: 48,
     left: 45,
     position: "absolute",
     fontWeight: "bold",
@@ -156,7 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   image1: {
-    top: 90,
+    top: 110,
     left: 37,
     width: 345,
     height: 220,
@@ -164,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 38
   },
   scrollArea: {
-    top: 330,
+    top: 360,
     left: 35,
     width: 349,
     height: 230,
@@ -260,4 +252,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminSpecificNews;
+export default UserSpecificBlogsPage;

@@ -14,7 +14,7 @@ function AdminNews({navigation}) {
           <View style={styles.backgroundStack}>
 
               <View style={styles.frame61}>
-                  <Text style={styles.sriLankanLeopard}>News</Text>
+                  <Text style={styles.sriLankanLeopard}>Analyse News</Text>
                 </View>
                 <View style={[styles.container123, styles.materialSearchBar]}>
                   <View style={styles.rect11}>

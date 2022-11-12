@@ -27,6 +27,10 @@ import UserNews from '../screens/User/BlogsAndNews/News/UserNews';
 import UserSpecificNews from '../screens/User/BlogsAndNews/News/UserSpecificNews';
 import UserUpdateNews from '../screens/User/BlogsAndNews/News/UserUpdateNews';
 import AddNewNews from '../screens/User/BlogsAndNews/News/AddNewNews';
+import BlogsPage from '../screens/User/BlogsAndNews/BlogsAndArticles/BlogsPage';
+import UserSpecificBlogsPage from '../screens/User/BlogsAndNews/BlogsAndArticles/UserSpecificBlogsPage';
+import UserAddBlog from '../screens/User/BlogsAndNews/BlogsAndArticles/UserAddBlog';
+import UserUpdateBlogPage from '../screens/User/BlogsAndNews/BlogsAndArticles/UserUpdateBlogPage';
 
 import Donations from '../screens/User/Donations/Donations';
 import MyDonationPage from '../screens/User/Donations/MyDonationPage';
@@ -224,6 +228,34 @@ function HomeStackScreen() {
       <BlogsAndNewsStack.Screen 
         name="AddNewNews" 
         component={AddNewNews}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="BlogsPage" 
+        component={BlogsPage}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="UserUpdateBlogPage" 
+        component={UserUpdateBlogPage}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="UserAddBlog" 
+        component={UserAddBlog}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="UserSpecificBlogsPage" 
+        component={UserSpecificBlogsPage}           
         options={{
             headerShown: false,
         }}
