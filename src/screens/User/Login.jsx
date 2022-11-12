@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -13,38 +14,51 @@ import axios from "axios";
 function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, seterror] = useState("");
 
   const login = async (e) => {
     e.preventDefault();
 
     if (email === "" || password === "") {
-      alert("Please fill all the fields!");
-    } else if (password.length < 6) {
-      alert("Password must be at least 6 characters!");
+      seterror("Please fill all the fields!");
     } else {
       try {
         const user = {
           email,
           password,
         };
-        axios
-          .post(
-            "https://life-on-land-backend.azurewebsites.net/api/user/login",
-            user
-          )
-          .then((res) => {
-            if (res.data.role === "Admin") {
-              navigation.navigate("AdminHome");
-            } else {
-              navigation.navigate("MyTabs");
-            }
-            AsyncStorage.setItem("token", res.data.token);
-            AsyncStorage.setItem("role", res.data.role);
-          });
+
+        const EmailRegex = new RegExp(
+          "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
+        );
+
+        if (!EmailRegex.test(email)) {
+          seterror("Please enter a valid email!");
+        } else {
+          await axios
+            .post(
+              "https://life-on-land-backend.azurewebsites.net/api/user/login",
+              user
+            )
+            .then((res) => {
+              if (res.data.role === "Admin") {
+                navigation.navigate("AdminHome");
+              } else {
+                navigation.navigate("MyTabs");
+              }
+              AsyncStorage.setItem("token", res.data.token);
+              AsyncStorage.setItem("role", res.data.role);
+            });
+        }
       } catch (error) {
-        alert(error);
+        console.log(error);
+        seterror(error.response.data.message);
       }
     }
+  };
+
+  const onRedirectToSignUp = () => {
+    navigation.navigate("Registration");
   };
 
   return (
@@ -62,9 +76,13 @@ function Login({ navigation }) {
         <Text style={styles.dontHaveAnAccountYetSignUp}>
           Don’t have an account yet ?
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-          <Text style={styles.signUp}>Sign Up</Text>
-        </TouchableOpacity>
+
+        <View>
+          <Text onPress={onRedirectToSignUp} style={styles.signUp}>
+            Sign Up
+          </Text>
+        </View>
+
         <View style={[styles.containertxt1, styles.materialUnderlineTextbox15]}>
           <TextInput
             placeholder="Enter your Email"
@@ -82,6 +100,16 @@ function Login({ navigation }) {
           ></TextInput>
         </View>
 
+        {error ? (
+          <View style={styles.errorContainer}>
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          </View>
+        ) : (
+          ""
+        )}
+
         <TouchableOpacity
           onPress={login}
           style={[styles.containerbtn, styles.materialButtonViolet12]}
@@ -94,6 +122,26 @@ function Login({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: "white",
+    fontSize: 14,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  errorBox: {
+    backgroundColor: "red",
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 20,
+    width: 355,
+  },
+  errorContainer: {
+    marginTop: -100,
+    Width: Dimensions.get("window").width,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: -21,
+  },
   container: {
     backgroundColor: "rgba(0,0,0,0)",
     flex: 1,
@@ -119,7 +167,7 @@ const styles = StyleSheet.create({
   },
   signUp: {
     color: "rgba(74,144,226,1)",
-    marginTop: 378,
+    marginTop: 415,
     fontWeight: "bold",
     marginLeft: 170,
   },
@@ -136,7 +184,7 @@ const styles = StyleSheet.create({
   },
   dontHaveAnAccountYetSignUp: {
     position: "absolute",
-    top: 657,
+    top: 695,
     left: 57,
     height: 56,
     width: 268,
@@ -183,7 +231,7 @@ const styles = StyleSheet.create({
     width: 364,
     position: "absolute",
     left: 24,
-    top: 583,
+    top: 560,
     backgroundColor: "rgba(34,139,34,1)",
     borderRadius: 84,
   },
