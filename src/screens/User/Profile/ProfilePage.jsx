@@ -28,23 +28,14 @@ function ProfilePage(props) {
           ever since the 1500s
         </Text>
         <View style={styles.materialButtonPrimary1Row}>
-          {/* <MaterialButtonPrimary1
-            style={styles.materialButtonPrimary1}
-          ></MaterialButtonPrimary1> */}
-          {/* <MaterialButtonDanger1
-            style={styles.materialButtonDanger1}
-          ></MaterialButtonDanger1> */}
         <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonPrimary1]}>
-          <Text style={styles.approve}>Approve</Text>
+          <Text style={styles.approve}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.containerbtn1, styles.materialButtonDanger1]}>
-          <Text style={styles.decline}>Decline</Text>
+          <Text style={styles.decline}>Delete</Text>
         </TouchableOpacity>
         </View>
       </View>
-      {/* <View style={styles.frame3Stack}>
-        <Text style={styles.nimnaThiranjaya}>Nimna Thiranjaya</Text>
-      </View> */}
 
         <View style={styles.frame61}>
                 <Image
@@ -123,7 +114,6 @@ const styles = StyleSheet.create({
     width: 38
   },
   nimnaThiranjaya3: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     fontSize: 16,
     marginLeft: 15,
@@ -151,7 +141,6 @@ const styles = StyleSheet.create({
     marginLeft: 1
   },
   enviromentalist: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     fontSize: 16,
     marginLeft: 15,
@@ -165,7 +154,6 @@ const styles = StyleSheet.create({
     marginRight: 161
   },
   loremIpsum: {
-    fontFamily: "roboto-regular",
     color: "#121212",
     height: 99,
     width: 262,
