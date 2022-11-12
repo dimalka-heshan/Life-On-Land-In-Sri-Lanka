@@ -15,7 +15,9 @@ import AddAnimalPage from "../screens/User/Home/Animals/AddAnimalPage";
 import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
 
 import OrganizationPage from "../screens/User/Organization/OrganizationPage";
-
+import SpecificOrgPage from '../screens/User/Organization/SpecificOrgPage';
+import AddOrganizationPage from '../screens/User/Organization/AddOrganizationPage';
+import UpdateOrganizationPage from '../screens/User/Organization/UpdateOrganizationPage';
 
 import Profile from "../screens/User/Profile/ProfilePage";
 import UpdateUserProfile from '../screens/User/Profile/UpdateUserProfile';
@@ -127,37 +129,58 @@ function HomeStackScreen() {
 
  function ProfileStackScreen() {
   return (
-    <OrganizationStack.Navigator>
-     <OrganizationStack.Screen 
+    <ProfileStack.Navigator>
+     <ProfileStack.Screen 
         name="Profile" 
         component={Profile}           
         options={{
             headerShown: false,
         }}
       />   
-      <OrganizationStack.Screen 
+      <ProfileStack.Screen 
         name="UpdateUserProfile" 
         component={UpdateUserProfile}           
         options={{
             headerShown: false,
         }}
       />      
-    </OrganizationStack.Navigator>
+    </ProfileStack.Navigator>
    );
  }
 
 
  function OrganizationStackScreen() {
   return (
-    <ProfileStack.Navigator>
-     <ProfileStack.Screen 
+    <OrganizationStack.Navigator>
+     <OrganizationStack.Screen 
         name="OrganizationPage" 
         component={OrganizationPage}           
         options={{
             headerShown: false,
         }}
-      />        
-    </ProfileStack.Navigator>
+      /> 
+      <OrganizationStack.Screen 
+        name="SpecificOrgPage" 
+        component={SpecificOrgPage}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <OrganizationStack.Screen 
+        name="AddOrganizationPage" 
+        component={AddOrganizationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />  
+      <OrganizationStack.Screen 
+        name="UpdateOrganizationPage" 
+        component={UpdateOrganizationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />    
+    </OrganizationStack.Navigator>
    );
  }
 
