@@ -119,9 +119,14 @@ function Registration({ navigation }) {
           </Text>
         </TouchableOpacity>
         <View>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.signUp}>Sign In</Text>
-          </TouchableOpacity> */}
+          <View>
+            <Text
+              onPress={() => navigation.navigate("Login")}
+              style={styles.signUp}
+            >
+              Sign In
+            </Text>
+          </View>
         </View>
       </View>
     </View>
