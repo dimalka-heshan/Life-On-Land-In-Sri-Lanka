@@ -46,19 +46,19 @@ function Login({ navigation }) {
               } else {
                 navigation.navigate("MyTabs");
               }
+              AsyncStorage.clear();
               AsyncStorage.setItem("token", res.data.token);
               AsyncStorage.setItem("role", res.data.role);
             });
         }
       } catch (error) {
-        console.log(error);
         seterror(error.response.data.message);
       }
     }
   };
 
   const onRedirectToSignUp = () => {
-    navigation.navigate("Registration");
+    navigation.push("Registration");
   };
 
   return (
