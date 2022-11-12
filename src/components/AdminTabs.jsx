@@ -29,15 +29,17 @@ import AdminSpecificOrgPage from '../screens/Admin/Organization/AdminSpecificOrg
 import AdminProfile from "../screens/Admin/Profile/AdminProfile";
 import UpdateAdminProfile from '../screens/Admin/Profile/UpdateAdminProfile';
 
-import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
+import AdminBlogs from '../screens/Admin/BlogsAndNews/AdminBlogs';
+import AdminSpecificBlog from '../screens/Admin/BlogsAndNews/AdminSpecificBlog';
 
-import AdminNews from '../screens/Admin/Donations/AdminNews';
-import AdminSpecificNews from '../screens/Admin/Donations/AdminSpecificNews';
+import AdminNews from '../screens/Admin/News/AdminNews';
+import AdminSpecificNews from '../screens/Admin/News/AdminSpecificNews';
 
 const HomeStack = createNativeStackNavigator();
 const OrganizationStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const NewsStack = createNativeStackNavigator();
+const BlogsStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -215,6 +217,27 @@ function HomeStackScreen() {
    );
  }
 
+ function BlogsStackScreen() {
+  return (
+    <BlogsStack.Navigator>
+     <BlogsStack.Screen 
+        name="AdminBlogs" 
+        component={AdminBlogs}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <BlogsStack.Screen 
+        name="AdminSpecificBlog" 
+        component={AdminSpecificBlog}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+    </BlogsStack.Navigator>
+   );
+ }
+
 function AdminTabs() {
   return (
     <Tab.Navigator
@@ -253,8 +276,8 @@ function AdminTabs() {
         }}
       />
       <Tab.Screen 
-        name="BlogsAndNews" 
-        component={AdminBlogsAndNews} 
+        name="BlogsStackScreen" 
+        component={BlogsStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{

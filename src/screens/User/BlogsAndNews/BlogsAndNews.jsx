@@ -4,11 +4,13 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 function BlogsAndNews({navigation}) {
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('BlogsPage')}>
       <Image
         source={require("../../../assets/images/1.png")}
         resizeMode="contain"
         style={styles.image}
       ></Image>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('UserNews')}>
       <Image
