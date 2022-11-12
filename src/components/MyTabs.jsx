@@ -14,8 +14,12 @@ import AnimalDetails from "../screens/User/Home/Animals/AnimalDetails";
 import AddAnimalPage from "../screens/User/Home/Animals/AddAnimalPage";
 import AddPlantPage from "../screens/User/Home/Plants/AddPlantPage";
 
-import Organization from "../screens/User/Organization/Organization";
+import OrganizationPage from "../screens/User/Organization/OrganizationPage";
+
+
 import Profile from "../screens/User/Profile/ProfilePage";
+import UpdateUserProfile from '../screens/User/Profile/UpdateUserProfile';
+
 import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
 
 import Donations from '../screens/User/Donations/Donations';
@@ -26,6 +30,8 @@ import PaymentSuccessful from '../screens/User/Donations/PaymentSuccessful';
 
 const HomeStack = createNativeStackNavigator();
 const DonationStack = createNativeStackNavigator();
+const OrganizationStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -118,6 +124,43 @@ function HomeStackScreen() {
    );
  }
 
+
+ function ProfileStackScreen() {
+  return (
+    <OrganizationStack.Navigator>
+     <OrganizationStack.Screen 
+        name="Profile" 
+        component={Profile}           
+        options={{
+            headerShown: false,
+        }}
+      />   
+      <OrganizationStack.Screen 
+        name="UpdateUserProfile" 
+        component={UpdateUserProfile}           
+        options={{
+            headerShown: false,
+        }}
+      />      
+    </OrganizationStack.Navigator>
+   );
+ }
+
+
+ function OrganizationStackScreen() {
+  return (
+    <ProfileStack.Navigator>
+     <ProfileStack.Screen 
+        name="OrganizationPage" 
+        component={OrganizationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />        
+    </ProfileStack.Navigator>
+   );
+ }
+
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -175,8 +218,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen 
-        name="Organization" 
-        component={Organization} 
+        name="OrganizationStackScreen" 
+        component={OrganizationStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -215,8 +258,8 @@ function MyTabs() {
       />
 
       <Tab.Screen 
-        name="Profile" 
-        component={Profile} 
+        name="ProfileStackScreen" 
+        component={ProfileStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
