@@ -23,11 +23,19 @@ import AdminsAnimalsApproval from '../screens/Admin/Home/Animals/AdminsAnimalsAp
 import AdminsPlantApproval from '../screens/Admin/Home/Plants/AdminsPlantApproval';
 
 import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
+import AdminAddOrganizationPage from '../screens/Admin/Organization/AdminAddOrganizationPage';
+import AdminSpecificOrgPage from '../screens/Admin/Organization/AdminSpecificOrgPage';
+
+
 import AdminProfile from "../screens/Admin/Profile/AdminProfile";
+import UpdateAdminProfile from '../screens/Admin/Profile/UpdateAdminProfile';
+
 import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
 import AdminDonations from '../screens/Admin/Donations/AdminDonations'
 
 const HomeStack = createNativeStackNavigator();
+const OrganizationStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -134,6 +142,63 @@ function HomeStackScreen() {
    );
  }
 
+ function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator>
+     <ProfileStack.Screen 
+        name="AdminProfile" 
+        component={AdminProfile}           
+        options={{
+            headerShown: false,
+        }}
+      />   
+      <ProfileStack.Screen 
+        name="UpdateAdminProfile" 
+        component={UpdateAdminProfile}           
+        options={{
+            headerShown: false,
+        }}
+      />      
+    </ProfileStack.Navigator>
+   );
+ }
+
+
+ function OrganizationStackScreen() {
+  return (
+    <OrganizationStack.Navigator>
+     <OrganizationStack.Screen 
+        name="AdminOrganization" 
+        component={AdminOrganization}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <OrganizationStack.Screen 
+        name="AdminSpecificOrgPage" 
+        component={AdminSpecificOrgPage}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <OrganizationStack.Screen 
+        name="AdminAddOrganizationPage" 
+        component={AdminAddOrganizationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />  
+      {/* <OrganizationStack.Screen 
+        name="UpdateOrganizationPage" 
+        component={UpdateOrganizationPage}           
+        options={{
+            headerShown: false,
+        }}
+      />     */}
+    </OrganizationStack.Navigator>
+   );
+ }
+
 function AdminTabs() {
   return (
     <Tab.Navigator
@@ -192,7 +257,7 @@ function AdminTabs() {
       />
       <Tab.Screen 
         name="Organization" 
-        component={AdminOrganization} 
+        component={OrganizationStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -232,7 +297,7 @@ function AdminTabs() {
 
       <Tab.Screen 
         name="Profile" 
-        component={AdminProfile} 
+        component={ProfileStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{

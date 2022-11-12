@@ -3,13 +3,13 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-nativ
 import Icon from "react-native-vector-icons/FontAwesome";
 
 
-function UpdateUserProfile(props) {
+function UpdateAdminProfile(props) {
   return (
     <View style={styles.container}>
       <View style={styles.group2}>
         <View style={styles.group}>
         <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>Update User Profile</Text>
+              <Text style={styles.sriLankanLeopard}>Update Admin Profile</Text>
         </View>
           <View style={[styles.container222, styles.materialUnderlineTextbox28]}>
             <TextInput
@@ -266,4 +266,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UpdateUserProfile;
+export default UpdateAdminProfile;
