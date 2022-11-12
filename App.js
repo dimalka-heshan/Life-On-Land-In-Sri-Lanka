@@ -1,5 +1,4 @@
 import React from "react";
-import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -14,28 +13,30 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
           name="Login"
           component={Login}
           options={{
             headerShown: false,
           }}
-      />
-      <Stack.Screen
+        />
+        <Stack.Screen
           name="Registration"
           component={Registration}
           options={{
             headerShown: false,
           }}
-      />
-      <Stack.Screen
+        />
+
+        <Stack.Screen
           name="AdminTabs"
           component={AdminTabs}
           options={{
             headerShown: false,
           }}
-      />
-      <Stack.Screen
+        />
+
+        <Stack.Screen
           name="MyTabs"
           component={MyTabs}
           options={{
@@ -46,3 +47,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
