@@ -23,6 +23,10 @@ import Profile from "../screens/User/Profile/ProfilePage";
 import UpdateUserProfile from '../screens/User/Profile/UpdateUserProfile';
 
 import BlogsAndNews from '../screens/User/BlogsAndNews/BlogsAndNews';
+import UserNews from '../screens/User/BlogsAndNews/News/UserNews';
+import UserSpecificNews from '../screens/User/BlogsAndNews/News/UserSpecificNews';
+import UserUpdateNews from '../screens/User/BlogsAndNews/News/UserUpdateNews';
+import AddNewNews from '../screens/User/BlogsAndNews/News/AddNewNews';
 
 import Donations from '../screens/User/Donations/Donations';
 import MyDonationPage from '../screens/User/Donations/MyDonationPage';
@@ -34,6 +38,7 @@ const HomeStack = createNativeStackNavigator();
 const DonationStack = createNativeStackNavigator();
 const OrganizationStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const BlogsAndNewsStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -184,6 +189,49 @@ function HomeStackScreen() {
    );
  }
 
+
+ function BlogsAndNewsStackScreen() {
+  return (
+    <BlogsAndNewsStack.Navigator>
+      <BlogsAndNewsStack.Screen 
+        name="BlogsAndNews" 
+        component={BlogsAndNews}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+     <BlogsAndNewsStack.Screen 
+        name="UserNews" 
+        component={UserNews}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <BlogsAndNewsStack.Screen 
+        name="UserSpecificNews" 
+        component={UserSpecificNews}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="UserUpdateNews" 
+        component={UserUpdateNews}           
+        options={{
+            headerShown: false,
+        }}
+      />
+      <BlogsAndNewsStack.Screen 
+        name="AddNewNews" 
+        component={AddNewNews}           
+        options={{
+            headerShown: false,
+        }}
+      />
+    </BlogsAndNewsStack.Navigator>
+   );
+ }
+
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -222,8 +270,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen 
-        name="BlogsAndNews" 
-        component={BlogsAndNews} 
+        name="BlogsAndNewsStackScreen" 
+        component={BlogsAndNewsStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{

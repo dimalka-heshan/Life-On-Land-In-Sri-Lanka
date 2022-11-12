@@ -224,12 +224,6 @@ const styles = StyleSheet.create({
     marginLeft: 22,
     marginRight: 22
   },
-  icon3: {
-    color: "rgba(232,213,0,1)",
-    fontSize: 17,
-    height: 19,
-    width: 18
-  },
   loremIpsum2: {
     color: "#121212",
     fontSize: 10,
@@ -307,24 +301,38 @@ const styles = StyleSheet.create({
     height: 19,
     width: 18
   },
-  loremIpsum4: {
-    color: "#121212",
-    fontSize: 10,
-    marginLeft: 2,
-    marginTop: 3
+  backgroundStack: {
+    backgroundColor: "white",
+    width: 414,
+    height: 896
   },
-  icon5Row: {
+
+
+
+
+
+
+
+
+  icon3Row: {
     height: 19,
     flexDirection: "row",
     marginTop: 4,
     marginLeft: 22,
     marginRight: 266
   },
-  backgroundStack: {
-    backgroundColor: "white",
-    width: 414,
-    height: 896
-  }
+  icon3: {
+    color: "rgba(232,213,0,1)",
+    fontSize: 17,
+    height: 19,
+    width: 18
+  },
+  loremIpsum4: {
+    color: "#121212",
+    fontSize: 10,
+    marginLeft: 2,
+    marginTop: 3
+  },
 });
 
 export default MyDonationPage;

@@ -26,16 +26,18 @@ import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
 import AdminAddOrganizationPage from '../screens/Admin/Organization/AdminAddOrganizationPage';
 import AdminSpecificOrgPage from '../screens/Admin/Organization/AdminSpecificOrgPage';
 
-
 import AdminProfile from "../screens/Admin/Profile/AdminProfile";
 import UpdateAdminProfile from '../screens/Admin/Profile/UpdateAdminProfile';
 
 import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
-import AdminDonations from '../screens/Admin/Donations/AdminDonations'
+
+import AdminNews from '../screens/Admin/Donations/AdminNews';
+import AdminSpecificNews from '../screens/Admin/Donations/AdminSpecificNews';
 
 const HomeStack = createNativeStackNavigator();
 const OrganizationStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const NewsStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -188,14 +190,28 @@ function HomeStackScreen() {
             headerShown: false,
         }}
       />  
-      {/* <OrganizationStack.Screen 
-        name="UpdateOrganizationPage" 
-        component={UpdateOrganizationPage}           
+    </OrganizationStack.Navigator>
+   );
+ }
+
+ function NewsStackScreen() {
+  return (
+    <NewsStack.Navigator>
+     <NewsStack.Screen 
+        name="AdminNews" 
+        component={AdminNews}           
         options={{
             headerShown: false,
         }}
-      />     */}
-    </OrganizationStack.Navigator>
+      /> 
+      <NewsStack.Screen 
+        name="AdminSpecificNews" 
+        component={AdminSpecificNews}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+    </NewsStack.Navigator>
    );
  }
 
@@ -276,8 +292,8 @@ function AdminTabs() {
       />
             
       <Tab.Screen 
-        name="Donations" 
-        component={AdminDonations} 
+        name="NewsStackScreen" 
+        component={NewsStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
