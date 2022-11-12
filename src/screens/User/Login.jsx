@@ -42,7 +42,7 @@ function Login({ navigation }) {
             )
             .then((res) => {
               if (res.data.role === "Admin") {
-                navigation.push("AdminHome");
+                navigation.push("AdminTabs");
               } else {
                 navigation.push("MyTabs");
               }
