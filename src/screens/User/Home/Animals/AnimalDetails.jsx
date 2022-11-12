@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
-import Svg, { Path, Defs, Mask } from "react-native-svg";
 
 function AnimalDetails(props) {
   return (
