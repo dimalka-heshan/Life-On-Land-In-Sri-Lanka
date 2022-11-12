@@ -1,8 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { Component, useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 import axios from "axios";
 
 function ProfilePage(props) {
@@ -26,7 +34,70 @@ function ProfilePage(props) {
       });
   };
 
-  console.log(userDetails);
+  //User Logout
+  const UserLogout = async () => {
+    Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [
+      {
+        text: "Yes",
+        onPress: async () => {
+          await AsyncStorage.clear();
+          props.navigation.push("Login");
+        },
+      },
+      {
+        text: "No",
+      },
+    ]);
+  };
+
+  //User Delete
+  const UserDelete = async () => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to delete your account?",
+      [
+        {
+          text: "Yes",
+          onPress: async () => {
+            const token = await AsyncStorage.getItem("token");
+            await axios
+              .delete(
+                "https://life-on-land-backend.azurewebsites.net/api/user/deleteProfile",
+                {
+                  headers: {
+                    Authorization: token,
+                  },
+                }
+              )
+              .then((res) => {
+                if (res.data.status) {
+                  Alert.alert(
+                    "Delete Success",
+                    "Account Deleted Successfully",
+                    [
+                      {
+                        text: "Okay",
+                        onPress: async () => {
+                          await AsyncStorage.clear();
+                          props.navigation.push("Login");
+                        },
+                      },
+                    ]
+                  );
+                }
+              })
+              .catch((err) => {
+                console.log(err.response.data.message);
+              });
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     GetUserProfile();
   }, []);
@@ -38,16 +109,16 @@ function ProfilePage(props) {
           <Text style={styles.nimnaThiranjaya3}>{userDetails.email}</Text>
         </View>
         <View style={styles.icon2Row}>
-          <FontAwesomeIcon
-            name="shopping-bag"
-            style={styles.icon2}
-          ></FontAwesomeIcon>
-          <FontAwesomeIcon
-            name="shopping-bag"
-            style={styles.icon3}
-          ></FontAwesomeIcon>
+          {userDetails.Occupation ? (
+            <FontAwesomeIcon
+              name="shopping-bag"
+              style={styles.icon3}
+            ></FontAwesomeIcon>
+          ) : (
+            ""
+          )}
           <Text style={styles.enviromentalist}>
-            {userDetails.Occupation ? userDetails.Occupation : "    -    "}
+            {userDetails.Occupation ? userDetails.Occupation : ""}
           </Text>
         </View>
         <Text style={styles.loremIpsum}>
@@ -75,6 +146,7 @@ function ProfilePage(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.containerbtn1, styles.materialButtonDanger1]}
+            onPress={UserDelete}
           >
             <Text style={styles.decline}>
               <FontAwesomeIcon
@@ -91,6 +163,14 @@ function ProfilePage(props) {
       </View> */}
 
       <View style={styles.frame61}>
+        <View style={styles.logOutContainer}>
+          <TouchableOpacity style={styles.logoutButton} onPress={UserLogout}>
+            <Text style={styles.logoutText}>
+              <Icon name="log-out" style={styles.logoutBtn}></Icon>
+              &nbsp; Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Image
           source={{ uri: userDetails.profileImage }}
           resizeMode="contain"
@@ -105,6 +185,34 @@ function ProfilePage(props) {
 }
 
 const styles = StyleSheet.create({
+  logoutButton: {
+    width: 100,
+    backgroundColor: "white",
+    padding: 7,
+    borderRadius: 9,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    elevation: 15,
+    shadowOpacity: 1,
+    shadowRadius: 5,
+  },
+  logOutContainer: {
+    position: "absolute",
+    marginTop: 10,
+    marginLeft: 240,
+  },
+  logoutText: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  logoutBtn: {
+    color: "red",
+    fontSize: 15,
+  },
   buttonIconStyle: {
     fontSize: 20,
   },

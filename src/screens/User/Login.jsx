@@ -42,9 +42,9 @@ function Login({ navigation }) {
             )
             .then((res) => {
               if (res.data.role === "Admin") {
-                navigation.navigate("AdminHome");
+                navigation.push("AdminHome");
               } else {
-                navigation.navigate("MyTabs");
+                navigation.push("MyTabs");
               }
               AsyncStorage.clear();
               AsyncStorage.setItem("token", res.data.token);
