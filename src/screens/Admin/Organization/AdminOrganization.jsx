@@ -40,12 +40,12 @@ function AdminOrganization({ navigation }) {
               `https://life-on-land-backend.azurewebsites.net/api/organization/deleteOrg/${orgID}`
             )
             .then((res) => {
-              Alert.alert(
-                "Succes",
-                "Organization Deleted Successfully"[
-                  { text: "Ok", onPress: () => GetOrganization() }
-                ]
-              );
+              Alert.alert("Succes", "Organization Deleted Successfully", [
+                {
+                  text: "Ok",
+                  onPress: async () => navigation.push("AdminOrganization"),
+                },
+              ]);
             });
         },
       },
@@ -57,7 +57,6 @@ function AdminOrganization({ navigation }) {
 
   //Approve Organization
   const onApproveOrg = async (orgID) => {
-    console.log(orgID);
     Alert.alert("Approve Confirmation", "Are you sure you want to approve?", [
       {
         text: "Ok",
@@ -68,8 +67,13 @@ function AdminOrganization({ navigation }) {
             )
             .then((res) => {
               if (res.data.status) {
-                Alert.alert("Succes", "Organization Approved Successfully", [
-                  { text: "Ok", onPress: () => GetOrganization() },
+                Alert.alert("Success", "Organization Approved Successfully", [
+                  {
+                    text: "Ok",
+                    onPress: async () => {
+                      navigation.push("AdminOrganization");
+                    },
+                  },
                 ]);
               }
             })
@@ -100,7 +104,12 @@ function AdminOrganization({ navigation }) {
               .then((res) => {
                 if (res.data.status) {
                   Alert.alert("Succes", "Organization Rejected Successfully", [
-                    { text: "Ok", onPress: () => GetOrganization() },
+                    {
+                      text: "Ok",
+                      onPress: async () => {
+                        navigation.push("AdminOrganization");
+                      },
+                    },
                   ]);
                 }
               })
@@ -176,7 +185,7 @@ function AdminOrganization({ navigation }) {
                     {org.adminStatus === "Pending" ? (
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.navigate("AdminSpecificOrgPage", {
+                          navigation.push("AdminSpecificOrgPage", {
                             orgId: org._id,
                           })
                         }
@@ -257,7 +266,7 @@ function AdminOrganization({ navigation }) {
                     {org.adminStatus != "Pending" ? (
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.navigate("AdminSpecificOrgPage", {
+                          navigation.push("AdminSpecificOrgPage", {
                             orgId: org._id,
                           })
                         }
