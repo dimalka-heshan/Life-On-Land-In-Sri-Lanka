@@ -6,6 +6,7 @@ import MyTabs from "./src/components/MyTabs";
 import AdminTabs from "./src/components/AdminTabs";
 import Login from "./src/screens/User/Login";
 import Registration from "./src/screens/User/Registration";
+import LandingPage from "./src/screens/User/LandingPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          name="LandingPage"
+          component={LandingPage}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
