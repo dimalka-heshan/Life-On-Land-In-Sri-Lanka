@@ -1,7 +1,30 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 
-function HomePage({navigation}) {
+function HomePage({ navigation }) {
+  const [allForests, setAllForests] = useState([]);
+  //get all forests
+  useEffect(() => {
+    axios
+      .get(
+        "https://life-on-land-backend.azurewebsites.net/api/forest/getAllForests"
+      )
+      .then((res) => {
+        setAllForests(res.data.forests);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
@@ -11,38 +34,28 @@ function HomePage({navigation}) {
             contentContainerStyle={styles.scrollArea_contentContainerStyle}
           >
             <View style={styles.groupRow}>
-              <TouchableOpacity onPress={() => navigation.navigate('ForestDetails')}>
-              <View style={styles.group}>
-                <View style={styles.rect7}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image5}
-                  ></Image>
-                  <Text style={styles.kariPlants4}>Kari Plants</Text>
-                </View>
-              </View>
-              </TouchableOpacity>
-              <View style={styles.group1}>
-                <View style={styles.rect8}>
-                  <Image
-                    source={require("../../../../assets/images/4ss1.jpg")}
-                    resizeMode="contain"
-                    style={styles.image6}
-                  ></Image>
-                  <Text style={styles.kariPlants5}>Kari Plants</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.group2}>
-              <View style={styles.rect9}>
-                <Image
-                  source={require("../../../../assets/images/4ss1.jpg")}
-                  resizeMode="contain"
-                  style={styles.image7}
-                ></Image>
-                <Text style={styles.kariPlants6}>Kari Plants</Text>
-              </View>
+              {allForests.map((forest) => (
+                <TouchableOpacity
+                  key={forest._id}
+                  onPress={() =>
+                    navigation.navigate("ForestDetails", {
+                      forestId: forest._id,
+                      forestName: forest.forestName,
+                      forestImage: forest.forestImage,
+                      forestDetails: forest.forestDetails,
+                    })
+                  }
+                >
+                  <View style={styles.rect9}>
+                    <Image
+                      source={{ uri: forest.forestImage }}
+                      resizeMode="contain"
+                      style={styles.image7}
+                    ></Image>
+                    <Text style={styles.plantName}>{forest.forestName}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
           </ScrollView>
         </View>
@@ -54,7 +67,7 @@ function HomePage({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   background: {
     position: "absolute",
@@ -63,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderColor: "transparent",
     left: 1,
-    top: 0
+    top: 0,
   },
   forestsInSriLanka: {
     position: "absolute",
@@ -81,15 +94,15 @@ const styles = StyleSheet.create({
     height: 764,
     marginLeft: -8,
     position: "absolute",
-    backgroundColor: "rgba(255,255,255,1)"
+    backgroundColor: "rgba(255,255,255,1)",
   },
   scrollArea_contentContainerStyle: {
     height: 764,
-    width: 415
+    width: 415,
   },
   group: {
     width: 172,
-    height: 260
+    height: 260,
   },
   rect7: {
     width: 172,
@@ -99,29 +112,29 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image5: {
     width: 140,
     height: 139,
     borderRadius: 25,
     marginTop: 13,
-    marginLeft: 16
+    marginLeft: 16,
   },
   kariPlants4: {
-        color: "rgba(48,64,34,1)",
+    color: "rgba(48,64,34,1)",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46
+    marginLeft: 46,
   },
   group1: {
     width: 172,
     height: 260,
-    marginLeft: 13
+    marginLeft: 13,
   },
   rect8: {
     width: 172,
@@ -131,70 +144,77 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image6: {
     width: 140,
     height: 139,
     borderRadius: 25,
     marginTop: 13,
-    marginLeft: 16
+    marginLeft: 16,
   },
   kariPlants5: {
-        color: "rgba(48,64,34,1)",
+    color: "rgba(48,64,34,1)",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46
+    marginLeft: 46,
   },
   groupRow: {
     height: 260,
     flexDirection: "row",
-    marginTop: 42,
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginTop: 10,
     marginLeft: 29,
-    marginRight: 29
+    marginRight: 29,
   },
   group2: {
     width: 172,
     height: 260,
     marginTop: 23,
-    marginLeft: 29
+    marginLeft: 29,
   },
   rect9: {
     width: 172,
     height: 260,
+    marginTop: 25,
     backgroundColor: "rgba(255,255,255,1)",
     borderRadius: 25,
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 75,
     shadowOpacity: 1,
-    shadowRadius: 25
+    shadowRadius: 25,
   },
   image7: {
     width: 140,
     height: 139,
     borderRadius: 25,
     marginTop: 13,
-    marginLeft: 16
+    marginLeft: 16,
   },
-  kariPlants6: {
-        color: "rgba(48,64,34,1)",
+  plantName: {
+    color: "rgba(48,64,34,1)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46
+    flexWrap: "wrap",
   },
   backgroundStack: {
     width: 415,
     height: 896,
-    marginLeft: -1
-  }
+    marginLeft: -1,
+  },
 });
 
 export default HomePage;

@@ -1,15 +1,85 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 function AdminsPlantApproval(props) {
+  const route = useRoute();
+  const navigate = useNavigation();
+
+  const [plantId, setplantId] = useState({});
+
+  useEffect(() => {
+    const data = {
+      plantId: route.params.plantId,
+      plantName: route.params.plantName,
+      plantImage: route.params.plantImage,
+      plantDetails: route.params.plantDetails,
+    };
+    setplantId(data);
+  }, [route.params.plantId]);
+
+  //Update animal status
+  const updateAnimalStatus = () => {
+    axios
+      .patch(
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminApprove/${plantId.plantId}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        Alert.alert("Success", "Plant approved successfully", [
+          {
+            text: "OK",
+            onPress: () => {
+              navigate.push("AdminHomePage");
+            },
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //Reject animal status
+  const rejectAnimalStatus = () => {
+    axios
+      .patch(
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminReject/${plantId.plantId}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        Alert.alert("Reject", "Plant rejected successfully", [
+          {
+            text: "OK",
+            onPress: () => {
+              navigate.push("AdminPlantsApprovalList");
+            },
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-            <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>Sri Lankan Leopard</Text>
-            </View>
+        <View style={styles.frame61}>
+          <Text style={styles.sriLankanLeopard}>{plantId.plantName}</Text>
+        </View>
         <Image
-          source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
+          source={{ uri: plantId.plantImage }}
           resizeMode="contain"
           style={styles.image1}
         ></Image>
@@ -18,31 +88,21 @@ function AdminsPlantApproval(props) {
             contentContainerStyle={styles.scrollArea1_contentContainerStyle}
           >
             <View style={styles.rect1}>
-              <Text style={styles.loremIpsum1}>
-                The Leopard (Panthera pardus, Linnaeus, 1758) is the most
-                secretive and elusive of the large carnivores, and also the
-                shrewdest. Pound for pound, it is the strongest climber of the
-                larger cats and is capable of killing prey far larger than
-                itself. However, the leopard is the smallest member of the genus
-                Panthera, which includes the Lion, Tiger and Jaguar.
-                Historically, the leopard had a wide distribution across eastern
-                and southern Asia and Africa, from Siberia to South Africa, with
-                fragmented populations in the Indian subcontinent, Sri Lanka,
-                Indochina, Malaysia, Indonesia and China. Sadly, the range has
-                decreased radically due to over hunting and loss of
-                habitat.After Linnaeus published his description of leopards
-                in the Systema Naturae in 1758, as many as 27 subspecies of
-                leopards were described within a period of 162 years (1794 to
-                1956), by various scientists.
-              </Text>
+              <Text style={styles.loremIpsum1}>{plantId.plantDetails}</Text>
             </View>
           </ScrollView>
         </View>
-        <TouchableOpacity style={[styles.containerbtn2, styles.materialButtonPrimary1]}>
-            <Text style={styles.approve}>Approve</Text>
+        <TouchableOpacity
+          onPress={() => updateAnimalStatus()}
+          style={[styles.containerbtn2, styles.materialButtonPrimary1]}
+        >
+          <Text style={styles.approve}>Approve</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.containerbtn1, styles.materialButtonDanger1]}>
-            <Text style={styles.decline}>Decline</Text>
+        <TouchableOpacity
+          onPress={() => rejectAnimalStatus()}
+          style={[styles.containerbtn1, styles.materialButtonDanger1]}
+        >
+          <Text style={styles.decline}>Decline</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -51,9 +111,9 @@ function AdminsPlantApproval(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft:-11,
+    marginLeft: -11,
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   background: {
     position: "absolute",
@@ -62,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     top: 0,
     bottom: 0,
-    left: 0
+    left: 0,
   },
   shriLankaPlatoSigiriiaSkalaLes1: {
     position: "absolute",
@@ -70,7 +130,7 @@ const styles = StyleSheet.create({
     left: 33,
     height: 199,
     width: 351,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   frame6: {
     position: "absolute",
@@ -81,11 +141,11 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.15)",
     shadowOffset: {
       height: 27,
-      width: 0
+      width: 0,
     },
     shadowRadius: 70.56399536132812,
     shadowOpacity: 1,
-    backgroundColor: "rgba(230, 230, 230,1)"
+    backgroundColor: "rgba(230, 230, 230,1)",
   },
   frame6ClippingMask: {
     position: "absolute",
@@ -94,7 +154,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame61: {
     position: "absolute",
@@ -103,10 +163,10 @@ const styles = StyleSheet.create({
     left: 33,
     height: 64,
     width: 351,
-    backgroundColor: "rgba(184,233,134,1)"
+    backgroundColor: "rgba(184,233,134,1)",
   },
   sriLankanLeopard: {
-    fontWeight:"bold",
+    fontWeight: "bold",
     height: 25,
     width: 305,
     backgroundColor: "transparent",
@@ -114,11 +174,11 @@ const styles = StyleSheet.create({
     color: "rgba(48,64,34,1)",
     fontSize: 20,
     marginTop: 17,
-    marginLeft: 23
+    marginLeft: 23,
   },
   frame6ClippingMaskStack: {
     width: 351,
-    height: 64
+    height: 64,
   },
   image1: {
     top: 158,
@@ -126,7 +186,7 @@ const styles = StyleSheet.create({
     width: 349,
     height: 237,
     position: "absolute",
-    borderRadius: 38
+    borderRadius: 38,
   },
   scrollArea1: {
     top: 410,
@@ -138,18 +198,18 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 90,
     shadowOpacity: 1,
     shadowRadius: 30,
-    
-    backgroundColor: "rgba(255,255,255,1)"
+
+    backgroundColor: "rgba(255,255,255,1)",
   },
   scrollArea1_contentContainerStyle: {
     height: 1102,
     borderRadius: 25,
-    width: 340
+    width: 340,
   },
   rect1: {
     width: 350,
@@ -157,14 +217,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1)",
     marginTop: 27,
     borderRadius: 25,
-    marginLeft: 17
+    marginLeft: 17,
   },
   loremIpsum1: {
     color: "#121212",
     height: 1044,
     width: 326,
     marginTop: 18,
-    marginLeft: 18
+    marginLeft: 18,
   },
   materialButtonPrimary1: {
     height: 34,
@@ -172,7 +232,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 83,
     top: 680,
-    borderRadius: 15
+    borderRadius: 15,
   },
   materialButtonDanger1: {
     height: 34,
@@ -180,11 +240,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 207,
     top: 680,
-    borderRadius: 15
+    borderRadius: 15,
   },
   backgroundStack: {
     width: 414,
-    flex: 1
+    flex: 1,
   },
   containerbtn1: {
     backgroundColor: "rgba(255,0,0,1)",
@@ -195,18 +255,18 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   decline: {
     color: "#fff",
-    fontSize: 14
+    fontSize: 14,
   },
   containerbtn2: {
     backgroundColor: "rgba(34,139,34,1)",
@@ -217,19 +277,19 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   approve: {
     color: "#fff",
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });
 
 export default AdminsPlantApproval;
