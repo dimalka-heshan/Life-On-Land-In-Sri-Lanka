@@ -10,13 +10,64 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
 
 function UserUpdateNews(props) {
   const [newsTittle, setnewsTittle] = useState("");
   const [newsContent, setnewsContent] = useState("");
-  const [newsImage, setnewsImage] = useState("qqqqqqqqqq");
+  const [newsImage, setnewsImage] = useState("");
+  const [image, setImage] = useState();
+  const [savedImg, setSavedImg] = useState("");
 
   var route = useRoute();
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  //Add the image to the cloudinary in react native
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    if (image) {
+      let data = new FormData();
+      data.append("file", {
+        uri: image,
+        type: "image/jpeg",
+        name: "testImage",
+      });
+      data.append("upload_preset", "GlobalEducation");
+      data.append("cloud_name", "desnqqj6a");
+      data.append("api_key", "143713375849926");
+      data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+      fetch(CLOUDINARY_URL, {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.url);
+
+          updateNews(data.url);
+        });
+    } else {
+      updateNews(newsImage);
+    }
+  };
+
   const GetNews = async () => {
     const { newsID } = route.params;
     await axios
@@ -31,7 +82,7 @@ function UserUpdateNews(props) {
   };
 
   //News Update
-  const updateNews = async () => {
+  const updateNews = async (imgURL) => {
     const { newsID } = route.params;
     await axios
       .patch(
@@ -39,7 +90,7 @@ function UserUpdateNews(props) {
         {
           newsTittle: newsTittle,
           newsContent: newsContent,
-          newsImage: newsImage,
+          newsImage: imgURL,
         }
       )
       .then((res) => {
@@ -88,18 +139,22 @@ function UserUpdateNews(props) {
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox6]}>
           <TextInput
-            placeholder="Choose an image"
+            value={image ? "Image Selected" : "Choose Image"}
             style={styles.inputStyle}
+            editable={false}
+            selectTextOnFocus={false}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={[styles.containerbtn, styles.materialButtonViolet1]}
         >
-          <Text style={styles.publish} onPress={updateNews}>
+          <Text style={styles.publish} onPress={cloudinaryImage}>
             Update
           </Text>
         </TouchableOpacity>
-        <Icon name="plus-circle" style={styles.icon1}></Icon>
+        <TouchableOpacity onPress={pickImage}>
+          <Icon name="plus-circle" style={styles.icon1}></Icon>
+        </TouchableOpacity>
       </View>
     </View>
   );

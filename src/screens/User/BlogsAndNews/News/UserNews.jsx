@@ -176,7 +176,7 @@ function UserNews({ navigation }) {
                           <View style={styles.rect}>
                             <View style={styles.image1Row}>
                               <Image
-                                source={require("../../../../assets/images/4ss1.jpg")}
+                                source={{ uri: item.newsImage }}
                                 resizeMode="contain"
                                 style={styles.image1}
                               ></Image>
@@ -238,7 +238,7 @@ function UserNews({ navigation }) {
                           <View style={styles.rect}>
                             <View style={styles.image1Row}>
                               <Image
-                                source={require("../../../../assets/images/4ss1.jpg")}
+                                source={{ uri: item.newsImage }}
                                 resizeMode="contain"
                                 style={styles.image1}
                               ></Image>

@@ -70,7 +70,7 @@ function AdminProfile({ navigation }) {
 
       <View style={styles.frame61}>
         <Image
-          source={require("../../../assets/images/4ss1.jpg")}
+          source={{ uri: admin.profileImage }}
           resizeMode="contain"
           style={styles.image7}
         ></Image>
@@ -90,10 +90,9 @@ const styles = StyleSheet.create({
     width: 140,
     height: 139,
     borderRadius: 100,
-    borderColor: "red",
+    borderColor: "#228B22",
     borderWidth: 4,
     borderStyle: "solid",
-    borderColor: "red",
     marginTop: 40,
     marginLeft: 100,
   },
