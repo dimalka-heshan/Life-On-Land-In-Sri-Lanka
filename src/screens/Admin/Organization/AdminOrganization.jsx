@@ -70,9 +70,7 @@ function AdminOrganization({ navigation }) {
                 Alert.alert("Success", "Organization Approved Successfully", [
                   {
                     text: "Ok",
-                    onPress: async () => {
-                      navigation.push("AdminOrganization");
-                    },
+                    onPress: async () => GetOrganization(),
                   },
                 ]);
               }
@@ -106,9 +104,7 @@ function AdminOrganization({ navigation }) {
                   Alert.alert("Succes", "Organization Rejected Successfully", [
                     {
                       text: "Ok",
-                      onPress: async () => {
-                        navigation.push("AdminOrganization");
-                      },
+                      onPress: async () => GetOrganization(),
                     },
                   ]);
                 }
@@ -507,7 +503,7 @@ const styles = StyleSheet.create({
     width: 100,
     marginTop: 4,
     height: 100,
-    borderRadius: 100,
+    borderRadius: 30,
   },
   environmantal: {
     color: "#121212",
