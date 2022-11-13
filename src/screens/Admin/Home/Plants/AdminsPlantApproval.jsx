@@ -40,7 +40,7 @@ function AdminsPlantApproval(props) {
           {
             text: "OK",
             onPress: () => {
-              navigate.push("AdminPlantsApprovalList");
+              navigate.push("AdminHomePage");
             },
           },
         ]);

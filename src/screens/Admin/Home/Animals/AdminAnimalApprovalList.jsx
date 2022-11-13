@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     height: 260,
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 175,
+    marginTop: 15,
     justifyContent: "center",
   },
   group3: {

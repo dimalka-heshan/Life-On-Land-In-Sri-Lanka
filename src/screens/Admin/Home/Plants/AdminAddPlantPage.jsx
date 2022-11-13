@@ -31,34 +31,48 @@ function AdminAddPlantPage(props) {
   const [forestId, setForestId] = React.useState(route.params.forestId);
 
   const addPlant = async () => {
-    const plant = {
-      name: plantName,
-      imageUrl: plantImage,
-      details: plantDetails,
-      type: "Plant",
-    };
+    if (plantName == "" || plantImage == "" || plantDetails == "") {
+      alert("Please fill all the fields");
+    } else if (plantName.length < 3) {
+      alert("Plant name should be at least 3 characters long");
+    } else if (plantImage.includes("https://") == false) {
+      alert("Image URL should start with https://");
+    } else if (plantDetails.length < 10) {
+      alert("Plant details should be at least 10 characters long");
+    } else {
+      try {
+        const plant = {
+          name: plantName,
+          imageUrl: plantImage,
+          details: plantDetails,
+          type: "Plant",
+        };
 
-    axios
-      .post(
-        `https://life-on-land-backend.azurewebsites.net/api/forest/createAnimalAndPlants/${forestId}`,
-        plant,
-        {
-          headers: {
-            Authorization: `${Token}`,
-          },
-        }
-      )
-      .then((res) => {
-        Alert.alert("Success", "Plant added successfully!", [
-          {
-            text: "OK",
-            onPress: () => props.navigation.push("AdminPlantsDetails"),
-          },
-        ]);
-      })
-      .catch((err) => {
+        axios
+          .post(
+            `https://life-on-land-backend.azurewebsites.net/api/forest/createAnimalAndPlants/${forestId}`,
+            plant,
+            {
+              headers: {
+                Authorization: `${Token}`,
+              },
+            }
+          )
+          .then((res) => {
+            Alert.alert("Success", "Plant added successfully!", [
+              {
+                text: "OK",
+                onPress: () => props.navigation.push("AdminPlantsDetails"),
+              },
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (err) {
         console.log(err);
-      });
+      }
+    }
   };
 
   return (

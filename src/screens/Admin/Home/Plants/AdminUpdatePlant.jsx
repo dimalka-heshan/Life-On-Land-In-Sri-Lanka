@@ -68,7 +68,7 @@ function AdminUpdatePlant(props) {
         Alert.alert("Success", "Plant updated successfully", [
           {
             text: "OK",
-            onPress: () => navigate.push("AdminPlantsDetails"),
+            onPress: () => navigate.push("AdminHomePage"),
           },
         ]);
       })

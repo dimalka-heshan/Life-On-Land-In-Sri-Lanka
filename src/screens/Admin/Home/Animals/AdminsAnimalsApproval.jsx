@@ -62,7 +62,7 @@ function AdminsAnimalsApproval(props) {
           {
             text: "OK",
             onPress: () => {
-              navigate.push("AdminAnimalApprovalList");
+              navigate.push("AdminHomePage");
             },
           },
         ]);

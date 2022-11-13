@@ -8,9 +8,12 @@ import {
   Image,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 function ForestDetails({ navigation }) {
   const route = useRoute();
+  const navigate = useNavigation();
 
   const [forest, setForest] = useState({});
 
@@ -32,7 +35,7 @@ function ForestDetails({ navigation }) {
   useEffect(() => {
     axios
       .get(
-        `https://life-on-land-backend.azurewebsites.net/api/getAllPlantsInForest/${forest.forestId}`
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminGetAllPlants/${forest.forestId}`
       )
       .then((res) => {
         setAllPlants(res.data.plants);
@@ -174,46 +177,42 @@ function ForestDetails({ navigation }) {
                 contentContainerStyle={styles.scrollArea1_contentContainerStyle}
               >
                 <View style={styles.group1Row}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("PlantsDetails")}
-                  >
-                    <View style={styles.group1}>
-                      <View style={styles.rect2}>
-                        <Image
-                          source={require("../../../../assets/images/4ss1.jpg")}
-                          resizeMode="contain"
-                          style={styles.image1}
-                        ></Image>
-                        <Text style={styles.kariPlants1}>Kari Plants</Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.group2}>
-                    <View style={styles.rect3}>
-                      <Image
-                        source={require("../../../../assets/images/4ss1.jpg")}
-                        resizeMode="contain"
-                        style={styles.image2}
-                      ></Image>
-                      <Text style={styles.kariPlants2}>Kari Plants</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.group3}>
-                  <View style={styles.rect4}>
-                    <Image
-                      source={require("../../../../assets/images/4ss1.jpg")}
-                      resizeMode="contain"
-                      style={styles.image3}
-                    ></Image>
-                    <Text style={styles.kariPlants3}>Kari Plants</Text>
-                  </View>
+                  {allPlants
+                    .filter((plant) => plant.adminStatus === "Approved")
+                    .map((plant) => (
+                      <TouchableOpacity
+                        key={plant._id}
+                        onPress={() =>
+                          navigate.push("PlantsDetails", {
+                            plantId: plant._id,
+                            plantName: plant.name,
+                            plantImage: plant.imageUrl,
+                            plantDetails: plant.details,
+                          })
+                        }
+                      >
+                        <View style={styles.group1}>
+                          <View style={styles.rect2}>
+                            <Image
+                              source={{ uri: plant.imageUrl }}
+                              resizeMode="contain"
+                              style={styles.image1}
+                            ></Image>
+                            <Text style={styles.kariPlants1}>{plant.name}</Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
                 </View>
               </ScrollView>
             </View>
             <TouchableOpacity
               style={[styles.containerbtn, styles.materialButtonViolet7]}
-              onPress={() => navigation.navigate("AddPlantPage")}
+              onPress={() =>
+                navigate.push("AddPlantPage", {
+                  forestId: forest.forestId,
+                })
+              }
             >
               <Text style={styles.addNewAnimals}>Add New Plant</Text>
             </TouchableOpacity>
@@ -227,26 +226,44 @@ function ForestDetails({ navigation }) {
                 contentContainerStyle={styles.scrollArea1_contentContainerStyle}
               >
                 <View style={styles.group1Row}>
-                  {allAnimals.map((animal) => (
-                    <TouchableOpacity>
-                      <View style={styles.group1}>
-                        <View style={styles.rect2}>
-                          <Image
-                            source={{ uri: animal.imageUrl }}
-                            resizeMode="contain"
-                            style={styles.image1}
-                          ></Image>
-                          <Text style={styles.kariPlants1}>{animal.name}</Text>
+                  {allAnimals
+                    .filter((animal) => animal.adminStatus === "Approved")
+                    .map((animal) => (
+                      <TouchableOpacity
+                        key={animal._id}
+                        onPress={() =>
+                          navigate.navigate("AnimalDetails", {
+                            animalId: animal._id,
+                            animalName: animal.name,
+                            animalImage: animal.imageUrl,
+                            animalDetails: animal.details,
+                          })
+                        }
+                      >
+                        <View style={styles.group1}>
+                          <View style={styles.rect2}>
+                            <Image
+                              source={{ uri: animal.imageUrl }}
+                              resizeMode="contain"
+                              style={styles.image1}
+                            ></Image>
+                            <Text style={styles.kariPlants1}>
+                              {animal.name}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
+                      </TouchableOpacity>
+                    ))}
                 </View>
               </ScrollView>
             </View>
             <TouchableOpacity
               style={[styles.containerbtn, styles.materialButtonViolet7]}
-              onPress={() => navigation.navigate("AddAnimalPage")}
+              onPress={() =>
+                navigate.push("AddAnimalPage", {
+                  forestId: forest._id,
+                })
+              }
             >
               <Text style={styles.addNewAnimals}>Add New Animal Species</Text>
             </TouchableOpacity>
@@ -418,6 +435,8 @@ const styles = StyleSheet.create({
   group1: {
     width: 172,
     height: 260,
+    margin: 3,
+    marginTop: 10,
   },
   rect2: {
     width: 172,
@@ -444,7 +463,7 @@ const styles = StyleSheet.create({
     color: "rgba(48,64,34,1)",
     fontSize: 16,
     marginTop: 32,
-    marginLeft: 46,
+    textAlign: "center",
   },
   group2: {
     width: 172,
@@ -481,6 +500,7 @@ const styles = StyleSheet.create({
   group1Row: {
     height: 260,
     flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 42,
     marginLeft: 29,
     marginRight: 29,

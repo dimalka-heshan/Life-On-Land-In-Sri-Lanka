@@ -68,7 +68,10 @@ function AdminUpdateAnimal(props) {
         Alert.alert("Success", "Animal updated successfully", [
           {
             text: "OK",
-            onPress: () => navigate.push("AdminAnimalDetails"),
+            onPress: () =>
+              navigate.push("AdminHomePage", {
+                animalId: animalId.animalId,
+              }),
           },
         ]);
       })

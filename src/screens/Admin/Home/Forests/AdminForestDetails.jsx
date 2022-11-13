@@ -273,7 +273,7 @@ function AdminForestDetails({ navigation }) {
             <TouchableOpacity
               style={[styles.containerbtn2, styles.materialButtonViolet7]}
               onPress={() =>
-                navigate.push("AdminPlantsApprovalList", {
+                navigate.navigate("AdminPlantsApprovalList", {
                   forestId: forest.forestId,
                 })
               }
@@ -377,7 +377,7 @@ function AdminForestDetails({ navigation }) {
             <TouchableOpacity
               style={[styles.containerbtn, styles.materialButtonViolet77]}
               onPress={() =>
-                navigation.navigate("AdminAddAnimalPage", {
+                navigation.push("AdminAddAnimalPage", {
                   forestId: forest.forestId,
                 })
               }
