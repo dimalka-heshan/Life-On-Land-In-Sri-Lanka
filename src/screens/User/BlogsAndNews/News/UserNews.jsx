@@ -184,6 +184,15 @@ function UserNews({ navigation }) {
                                 <Text style={styles.loremIpsum}>
                                   {item.newsTittle}
                                 </Text>
+                                {item.adminStatus == "Pending" ? (
+                                    <View style={styles.statusContainer}>
+                                      <Text style={styles.statusText}>
+                                        Pending
+                                      </Text>
+                                    </View>
+                                  ) : (
+                                    ""
+                                  )}
                                 <View style={styles.icon2Row}>
                                   <IoniconsIcon
                                     name="ios-radio-button-on"
@@ -280,6 +289,21 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     justifyContent: "center",
+  },
+  statusText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  statusContainer: {
+    position: "absolute",
+    marginTop: 52,
+    marginLeft: 0,
+    backgroundColor: "orange",
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderRadius: 10,
   },
   icon33: {
     color: "rgba(232,213,0,1)",

@@ -363,11 +363,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   loremIpsum3: {
+    width: 300,
     color: "#121212",
     fontSize: 9,
   },
   ravinduSandeepanaColumn: {
-    width: 113,
+    width: 300,
     marginLeft: 6,
     marginTop: 2,
     marginBottom: 3,
@@ -377,7 +378,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     height: 24,
     width: 21,
-    marginLeft: 59,
+    marginLeft: -140,
     marginTop: 6,
   },
   rect2: {
@@ -387,7 +388,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 20,
-    marginLeft: 9,
+    marginLeft: -105,
     marginTop: 5,
   },
   readMore: {
@@ -451,7 +452,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
   },
   nimnaThiraColumn: {
-    width: 102,
+    width: 200,
     marginLeft: 6,
     marginTop: 2,
     marginBottom: 3,
@@ -463,13 +464,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(65,117,5,1)",
     borderRadius: 20,
-    marginLeft: 100,
+    marginLeft: 0,
     marginTop: 5,
   },
   readMore1: {
     color: "#121212",
     fontSize: 10,
-    marginTop: 8,
+    marginTop: 5,
     marginLeft: 9,
   },
   image4Row: {

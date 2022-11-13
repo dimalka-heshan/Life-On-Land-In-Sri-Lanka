@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { Component, useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/Feather";
 
 function AdminProfile({ navigation }) {
   const [admin, setadmin] = useState("");
@@ -28,6 +29,22 @@ function AdminProfile({ navigation }) {
   useEffect(() => {
     getAdmin();
   }, []);
+
+    //User Logout
+    const UserLogout = async () => {
+      Alert.alert("Logout Confirmation", "Are you sure you want to logout?", [
+        {
+          text: "Yes",
+          onPress: async () => {
+            await AsyncStorage.clear();
+            navigation.push("Login");
+          },
+        },
+        {
+          text: "No",
+        },
+      ]);
+    };
   return (
     <View style={styles.container}>
       <View style={styles.rect}>
@@ -69,6 +86,14 @@ function AdminProfile({ navigation }) {
       </View>
 
       <View style={styles.frame61}>
+      <View style={styles.logOutContainer}>
+          <TouchableOpacity style={styles.logoutButton} onPress={UserLogout}>
+            <Text style={styles.logoutText}>
+              <Icon name="log-out" style={styles.logoutBtn}></Icon>
+              &nbsp; Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Image
           source={{ uri: admin.profileImage }}
           resizeMode="contain"
@@ -85,6 +110,34 @@ const styles = StyleSheet.create({
     marginLeft: -6,
     backgroundColor: "rgba(0,0,0,0)",
     flex: 1,
+  },
+  logoutButton: {
+    width: 100,
+    backgroundColor: "white",
+    padding: 7,
+    borderRadius: 9,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    elevation: 15,
+    shadowOpacity: 1,
+    shadowRadius: 5,
+  },
+  logOutContainer: {
+    position: "absolute",
+    marginTop: 10,
+    marginLeft: 240,
+  },
+  logoutText: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  logoutBtn: {
+    color: "red",
+    fontSize: 15,
   },
   image7: {
     width: 140,
