@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as ImagePicker from "expo-image-picker";
 
 function UpdateUserProfile(props) {
   const [fullName, setfullName] = useState("");
@@ -17,8 +18,58 @@ function UpdateUserProfile(props) {
   const [Occupation, setOccupation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [description, setDescription] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  const [image, setImage] = useState();
+  const [savedImg, setSavedImg] = useState("");
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    if (image) {
+      let data = new FormData();
+      data.append("file", {
+        uri: image,
+        type: "image/jpeg",
+        name: "testImage",
+      });
+      data.append("upload_preset", "GlobalEducation");
+      data.append("cloud_name", "desnqqj6a");
+      data.append("api_key", "143713375849926");
+      data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+      fetch(CLOUDINARY_URL, {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.url);
+
+          //Post method to send image to backend
+          UpdateUser(data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+          Alert.alert("Something went wrong");
+        });
+    } else {
+      UpdateUser(savedImg);
+    }
+  };
   const GetUserData = async () => {
     const token = await AsyncStorage.getItem("token");
 
@@ -35,7 +86,7 @@ function UpdateUserProfile(props) {
           setOccupation(res.data.user.Occupation);
           setPhoneNumber(res.data.user.phoneNumber);
           setDescription(res.data.user.description);
-          setProfileImage(res.data.user.profileImage);
+          setSavedImg(res.data.user.profileImage);
         }
       });
   };
@@ -44,19 +95,22 @@ function UpdateUserProfile(props) {
     GetUserData();
   }, []);
 
-  const UpdateUser = async () => {
+  console.log(savedImg);
+
+  const UpdateUser = async (imageURL) => {
     const token = await AsyncStorage.getItem("token");
+    const data = {
+      fullName,
+      Occupation,
+      phoneNumber,
+      description,
+      profileImage: imageURL,
+    };
 
     await axios
       .patch(
         "https://life-on-land-backend.azurewebsites.net/api/user/profileUpdate",
-        {
-          fullName,
-          Occupation,
-          phoneNumber,
-          description,
-          profileImage,
-        },
+        data,
         {
           headers: {
             Authorization: token,
@@ -161,11 +215,15 @@ function UpdateUserProfile(props) {
               style={[styles.container222, styles.materialUnderlineTextbox33]}
             >
               <TextInput
-                placeholder="Choose Profile Picture"
+                value={image ? "Image Selected" : "Choose Image"}
                 style={styles.inputStyle}
+                editable={false}
+                selectTextOnFocus={false}
               ></TextInput>
             </View>
-            <Icon name="plus-circle" style={styles.icon1}></Icon>
+            <TouchableOpacity onPress={pickImage}>
+              <Icon name="plus-circle" style={styles.icon1}></Icon>
+            </TouchableOpacity>
           </View>
           {/* <MaterialButtonViolet10
             style={styles.materialButtonViolet1}
@@ -173,7 +231,7 @@ function UpdateUserProfile(props) {
           <TouchableOpacity
             style={[styles.container111, styles.materialButtonViolet1]}
           >
-            <Text style={styles.update} onPress={UpdateUser}>
+            <Text style={styles.update} onPress={cloudinaryImage}>
               Update
             </Text>
           </TouchableOpacity>

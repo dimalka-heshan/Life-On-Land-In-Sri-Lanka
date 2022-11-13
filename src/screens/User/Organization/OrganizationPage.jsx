@@ -228,7 +228,7 @@ function OrganizationPage({ navigation }) {
                           <View style={styles.rect}>
                             <View style={styles.image1Row}>
                               <Image
-                                source={require("../../../assets/images/4ss1.jpg")}
+                                source={{ uri: organization.orgLogo }}
                                 resizeMode="contain"
                                 style={styles.image1}
                               ></Image>
@@ -266,12 +266,9 @@ function OrganizationPage({ navigation }) {
 
                                 <TouchableOpacity
                                   onPress={() =>
-                                    navigation.navigate(
-                                      "UpdateOrganizationPage",
-                                      {
-                                        orgID: organization._id,
-                                      }
-                                    )
+                                    navigation.push("UpdateOrganizationPage", {
+                                      orgID: organization._id,
+                                    })
                                   }
                                 >
                                   <FontAwesomeIcon

@@ -215,7 +215,7 @@ function AdminBlogs({ navigation }) {
                     <View style={styles.rect}>
                       <Text style={styles.loremIpsum1}>{blog.blogTittle}</Text>
                       <Image
-                        source={require("../../../assets/images/1bbb.png")}
+                        source={{ uri: blog.blogImage }}
                         resizeMode="contain"
                         style={styles.image}
                       ></Image>
@@ -284,7 +284,7 @@ function AdminBlogs({ navigation }) {
                     <View style={styles.rect3}>
                       <Text style={styles.loremIpsum4}>{blog.blogTittle}</Text>
                       <Image
-                        source={require("../../../assets/images/1bbb.png")}
+                        source={{ uri: blog.blogImage }}
                         resizeMode="contain"
                         style={styles.image3}
                       ></Image>

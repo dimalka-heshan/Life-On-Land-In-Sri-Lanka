@@ -190,7 +190,7 @@ function AdminOrganization({ navigation }) {
                           <View style={styles.rect}>
                             <View style={styles.image1Row}>
                               <Image
-                                source={require("../../../assets/images/4ss1.jpg")}
+                                source={{ uri: org.orgLogo }}
                                 resizeMode="contain"
                                 style={styles.image1}
                               ></Image>
@@ -271,7 +271,7 @@ function AdminOrganization({ navigation }) {
                           <View style={styles.rect}>
                             <View style={styles.image1Row}>
                               <Image
-                                source={require("../../../assets/images/4ss1.jpg")}
+                                source={{ uri: org.orgLogo }}
                                 resizeMode="contain"
                                 style={styles.image1}
                               ></Image>

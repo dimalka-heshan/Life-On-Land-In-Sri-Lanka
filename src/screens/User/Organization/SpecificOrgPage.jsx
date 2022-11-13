@@ -47,7 +47,7 @@ function SpecificOrgPage(props) {
         </View>
         <View style={styles.rect2}>
           <Image
-            source={require("../../../assets/images/3e2.jpg")}
+            source={{ uri: organization.orgLogo }}
             resizeMode="contain"
             style={styles.image1}
           ></Image>

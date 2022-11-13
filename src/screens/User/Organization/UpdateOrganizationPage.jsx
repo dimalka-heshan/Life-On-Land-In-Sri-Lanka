@@ -10,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
 
 function UpdateOrganizationPage(props) {
   const [orgName, setorgName] = useState("");
@@ -17,8 +18,63 @@ function UpdateOrganizationPage(props) {
   const [orgDescription, setorgDescription] = useState("");
   const [orgContactNo, setorgContactNo] = useState("");
   const [orgEmail, setorgEmail] = useState("");
+  const [image, setImage] = useState();
+  const [savedImg, setSavedImg] = useState("");
 
   var route = useRoute();
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  //Add the image to the cloudinary in react native
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    if (image) {
+      let data = new FormData();
+      data.append("file", {
+        uri: image,
+        type: "image/jpeg",
+        name: "testImage",
+      });
+      data.append("upload_preset", "GlobalEducation");
+      data.append("cloud_name", "desnqqj6a");
+      data.append("api_key", "143713375849926");
+      data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+      fetch(CLOUDINARY_URL, {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.url);
+          setSavedImg(data.url);
+
+          //Post method to send image to backend
+          UpdateOrganization(data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+          Alert.alert("Something went wrong");
+        });
+    } else {
+      UpdateOrganization(savedImg);
+    }
+  };
 
   const GetOrganization = async () => {
     const { orgID } = route.params;
@@ -32,6 +88,7 @@ function UpdateOrganizationPage(props) {
         setorgDescription(res.data.organization.orgDescription);
         setorgContactNo(res.data.organization.orgContactNo);
         setorgEmail(res.data.organization.orgEmail);
+        setSavedImg(res.data.organization.orgLogo);
       });
   };
 
@@ -40,7 +97,7 @@ function UpdateOrganizationPage(props) {
   }, []);
 
   //Update Organization
-  const UpdateOrganization = async () => {
+  const UpdateOrganization = async (imgURL) => {
     const { orgID } = route.params;
     // console.log(orgID);
 
@@ -50,6 +107,7 @@ function UpdateOrganizationPage(props) {
       orgDescription: orgDescription,
       orgContactNo: orgContactNo,
       orgEmail: orgEmail,
+      orgLogo: imgURL,
     };
 
     await axios
@@ -120,15 +178,20 @@ function UpdateOrganizationPage(props) {
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox28]}>
           <TextInput
-            placeholder="Choose Organization Logo"
+            value={image ? "Image Selected" : "Choose Image"}
             style={styles.inputStyle}
+            editable={false}
+            selectTextOnFocus={false}
           ></TextInput>
         </View>
-        <Icon name="plus-circle" style={styles.icon1}></Icon>
+        <TouchableOpacity onPress={pickImage}>
+          <Icon name="plus-circle" style={styles.icon1}></Icon>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.containerbtn, styles.materialButtonViolet18]}
         >
-          <Text style={styles.addOrganization} onPress={UpdateOrganization}>
+          <Text style={styles.addOrganization} onPress={cloudinaryImage}>
             Update Organization
           </Text>
         </TouchableOpacity>

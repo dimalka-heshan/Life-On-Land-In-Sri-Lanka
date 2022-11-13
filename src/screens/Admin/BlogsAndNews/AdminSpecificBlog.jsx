@@ -36,7 +36,7 @@ function AdminSpecificBlog(props) {
         </View>
         <Text style={styles.loremIpsum1502}>{blog.blogTittle}</Text>
         <Image
-          source={require("../../../assets/images/461931-landscape-samurai1.jpg")}
+          source={{ uri: blog.blogImage }}
           resizeMode="contain"
           style={styles.image1}
         ></Image>

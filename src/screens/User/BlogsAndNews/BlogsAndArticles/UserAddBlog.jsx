@@ -10,11 +10,64 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 function UserAddBlog(props) {
   const [blogTitle, setblogTitle] = useState("");
   const [blogContent, setblogContent] = useState("");
-  const [blogImage, setblogImage] = useState("wwwwwwwwwwwww");
+  const [blogImage, setblogImage] = useState("");
+  const [image, setImage] = useState();
+
+  const [savedImg, setSavedImg] = useState("");
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  //Add the image to the cloudinary in react native
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    let data = new FormData();
+    data.append("file", {
+      uri: image,
+      type: "image/jpeg",
+      name: "testImage",
+    });
+    data.append("upload_preset", "GlobalEducation");
+    data.append("cloud_name", "desnqqj6a");
+    data.append("api_key", "143713375849926");
+    data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+    fetch(CLOUDINARY_URL, {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.url);
+        setSavedImg(data.url);
+
+        //Post method to send image to backend
+        AddBlog();
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert("Something went wrong");
+      });
+  };
 
   const AddBlog = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -28,7 +81,7 @@ function UserAddBlog(props) {
           {
             blogTittle: blogTitle,
             blogContent: blogContent,
-            blogImage: blogImage,
+            blogImage: savedImg,
           },
           {
             headers: {
@@ -49,6 +102,7 @@ function UserAddBlog(props) {
         });
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
@@ -77,17 +131,21 @@ function UserAddBlog(props) {
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox6]}>
           <TextInput
-            placeholder="Choose an image"
+            value={image ? "Image Selected" : "Choose Image"}
             style={styles.inputStyle}
+            editable={false}
+            selectTextOnFocus={false}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={[styles.containerbtn, styles.materialButtonViolet1]}
-          onPress={AddBlog}
+          onPress={cloudinaryImage}
         >
           <Text style={styles.publish}>Publish Blog or Article</Text>
         </TouchableOpacity>
-        <Icon name="plus-circle" style={styles.icon1}></Icon>
+        <TouchableOpacity onPress={pickImage}>
+          <Icon name="plus-circle" style={styles.icon1}></Icon>
+        </TouchableOpacity>
       </View>
     </View>
   );

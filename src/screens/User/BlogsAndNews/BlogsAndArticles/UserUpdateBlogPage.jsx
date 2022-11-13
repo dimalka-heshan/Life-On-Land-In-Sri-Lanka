@@ -10,13 +10,68 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as ImagePicker from "expo-image-picker";
 
 function UserUpdateBlogPage(props) {
   const [blogTittle, setblogTitle] = useState("");
   const [blogContent, setblogContent] = useState("");
-  const [blogImage, setblogImage] = useState("wwwwwwwwwwwww");
+  const [image, setImage] = useState();
+  const [savedImg, setSavedImg] = useState("");
 
   var route = useRoute();
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  //Add the image to the cloudinary in react native
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    if (image) {
+      let data = new FormData();
+      data.append("file", {
+        uri: image,
+        type: "image/jpeg",
+        name: "testImage",
+      });
+      data.append("upload_preset", "GlobalEducation");
+      data.append("cloud_name", "desnqqj6a");
+      data.append("api_key", "143713375849926");
+      data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+      fetch(CLOUDINARY_URL, {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.url);
+          setSavedImg(data.url);
+
+          //Post method to send image to backend
+          UpdateBlog(data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+          Alert.alert("Something went wrong");
+        });
+    } else {
+      UpdateBlog(savedImg);
+    }
+  };
 
   const GetBlog = async () => {
     const { blogID } = route.params;
@@ -27,18 +82,18 @@ function UserUpdateBlogPage(props) {
       .then((res) => {
         setblogTitle(res.data.blog.blogTittle);
         setblogContent(res.data.blog.blogContent);
-        setblogImage(res.data.blog.blogImage);
+        setSavedImg(res.data.blog.blogImage);
       });
   };
 
   //Update Blog
-  const UpdateBlog = async () => {
+  const UpdateBlog = async (imgURL) => {
     const { blogID } = route.params;
 
     const data = {
       blogTittle: blogTittle,
       blogContent: blogContent,
-      blogImage: blogImage,
+      blogImage: imgURL,
     };
 
     await axios
@@ -94,17 +149,21 @@ function UserUpdateBlogPage(props) {
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox6]}>
           <TextInput
-            placeholder="Choose an image"
+            value={image ? "Image Selected" : "Choose Image"}
             style={styles.inputStyle}
+            editable={false}
+            selectTextOnFocus={false}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={[styles.containerbtn, styles.materialButtonViolet1]}
-          onPress={() => UpdateBlog()}
+          onPress={cloudinaryImage}
         >
           <Text style={styles.publish}>Update Blog Or Article</Text>
         </TouchableOpacity>
-        <Icon name="plus-circle" style={styles.icon1}></Icon>
+        <TouchableOpacity onPress={pickImage}>
+          <Icon name="plus-circle" style={styles.icon1}></Icon>
+        </TouchableOpacity>
       </View>
     </View>
   );
