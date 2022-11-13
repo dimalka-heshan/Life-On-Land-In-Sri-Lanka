@@ -59,6 +59,35 @@ function BlogsPage({ navigation }) {
       });
   };
 
+  //Search Organization
+  const searchBlog = async (e) => {
+    const searchKey = e;
+
+    const token = await AsyncStorage.getItem("token");
+    await axios
+      .get(
+        "https://life-on-land-backend.azurewebsites.net/api/blog/getAllApprovedBlog",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        filterData(res.data.blogs, searchKey.toLowerCase());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const filterData = (blogs, searchKey) => {
+    const result = blogs.filter((blog) =>
+      blog.blogTittle.toLowerCase().includes(searchKey)
+    );
+    setblogs(result);
+  };
+
   useEffect(() => {
     GetBlogs();
     getUserID();
@@ -81,6 +110,7 @@ function BlogsPage({ navigation }) {
               <TextInput
                 placeholder="Search"
                 style={styles.inputStyle}
+                onChangeText={(e) => searchBlog(e)}
               ></TextInput>
               <TouchableOpacity style={styles.rightIconButton}>
                 <MaterialCommunityIconsIcon

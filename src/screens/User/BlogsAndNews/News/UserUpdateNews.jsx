@@ -1,40 +1,103 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { Component, useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 function UserUpdateNews(props) {
+  const [newsTittle, setnewsTittle] = useState("");
+  const [newsContent, setnewsContent] = useState("");
+  const [newsImage, setnewsImage] = useState("qqqqqqqqqq");
+
+  var route = useRoute();
+  const GetNews = async () => {
+    const { newsID } = route.params;
+    await axios
+      .get(
+        `https://life-on-land-backend.azurewebsites.net/api/news/getOneNews/${newsID}`
+      )
+      .then((res) => {
+        setnewsTittle(res.data.news.newsTittle);
+        setnewsContent(res.data.news.newsContent);
+        setnewsImage(res.data.news.newsImage);
+      });
+  };
+
+  //News Update
+  const updateNews = async () => {
+    const { newsID } = route.params;
+    await axios
+      .patch(
+        `https://life-on-land-backend.azurewebsites.net/api/news/updateNews/${newsID}`,
+        {
+          newsTittle: newsTittle,
+          newsContent: newsContent,
+          newsImage: newsImage,
+        }
+      )
+      .then((res) => {
+        if (res.data.status) {
+          Alert.alert("Success", "News Updated successfully", [
+            {
+              text: "OK",
+              onPress: () => props.navigation.push("UserNews"),
+            },
+          ]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    GetNews();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-      <View style={styles.frame61}>
-              <Text style={styles.pitcherPlantInSriLanka}>
-                Update News
-              </Text>
+        <View style={styles.frame61}>
+          <Text style={styles.pitcherPlantInSriLanka}>Update News</Text>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox4]}>
-            <TextInput
-                placeholder="Enter News Title"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter News Title"
+            style={styles.inputStyle}
+            value={newsTittle}
+            onChangeText={(newsTittle) => setnewsTittle(newsTittle)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox5]}>
-            <TextInput
-                placeholder="Enter New Content"
-                multiline={true}
-                numberOfLines={10}
-                style={styles.inputStyle1}
-            ></TextInput>
+          <TextInput
+            placeholder="Enter New Content"
+            multiline={true}
+            numberOfLines={10}
+            style={styles.inputStyle1}
+            value={newsContent}
+            onChangeText={(newsContent) => setnewsContent(newsContent)}
+          ></TextInput>
         </View>
 
         <View style={[styles.containertxt, styles.materialUnderlineTextbox6]}>
-            <TextInput
-                placeholder="Choose an image"
-                style={styles.inputStyle}
-            ></TextInput>
+          <TextInput
+            placeholder="Choose an image"
+            style={styles.inputStyle}
+          ></TextInput>
         </View>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet1]}>
-            <Text style={styles.publish}>Update</Text>
+        <TouchableOpacity
+          style={[styles.containerbtn, styles.materialButtonViolet1]}
+        >
+          <Text style={styles.publish} onPress={updateNews}>
+            Update
+          </Text>
         </TouchableOpacity>
         <Icon name="plus-circle" style={styles.icon1}></Icon>
       </View>
@@ -46,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0)",
     marginLeft: -6.5,
-    flex: 1
+    flex: 1,
   },
   background: {
     position: "absolute",
@@ -55,7 +118,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   frame5: {
     position: "absolute",
@@ -66,10 +129,10 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.15)",
     shadowOffset: {
       height: 27,
-      width: 0
+      width: 0,
     },
     shadowRadius: 70.56399536132812,
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
   frame5ClippingMask: {
     position: "absolute",
@@ -78,14 +141,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame51: {
     position: "absolute",
     top: 0,
     left: 0,
     height: 64,
-    width: 351
+    width: 351,
   },
   addANewAnimal: {
     height: 52,
@@ -95,11 +158,11 @@ const styles = StyleSheet.create({
     color: "rgba(0,0,0,1)",
     fontSize: 18,
     marginTop: 22,
-    marginLeft: 16
+    marginLeft: 16,
   },
   frame5ClippingMaskStack: {
     width: 351,
-    height: 64
+    height: 64,
   },
   materialUnderlineTextbox4: {
     height: 43,
@@ -109,7 +172,7 @@ const styles = StyleSheet.create({
     top: 211,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 100
+    borderRadius: 100,
   },
   materialUnderlineTextbox5: {
     height: 296,
@@ -119,7 +182,7 @@ const styles = StyleSheet.create({
     top: 270,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 30
+    borderRadius: 30,
   },
   materialUnderlineTextbox6: {
     height: 50,
@@ -129,7 +192,7 @@ const styles = StyleSheet.create({
     top: 584,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 63
+    borderRadius: 63,
   },
   materialButtonViolet1: {
     height: 55,
@@ -138,7 +201,7 @@ const styles = StyleSheet.create({
     left: 20,
     top: 690,
     backgroundColor: "rgba(34,139,34,1)",
-    borderRadius: 100
+    borderRadius: 100,
   },
   icon1: {
     top: 589,
@@ -150,10 +213,8 @@ const styles = StyleSheet.create({
   },
   backgroundStack: {
     backgroundColor: "white",
-    flex: 1
+    flex: 1,
   },
-
-
 
   containerbtn: {
     backgroundColor: "#3F51B5",
@@ -165,14 +226,14 @@ const styles = StyleSheet.create({
     marginTop: -50,
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   publish: {
     color: "rgba(255,255,255,1)",
@@ -185,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     flexDirection: "row",
     marginTop: -25,
-    alignItems: "center"
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -196,7 +257,7 @@ const styles = StyleSheet.create({
     flex: 1,
     lineHeight: 16,
     paddingTop: 5,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   inputStyle1: {
     color: "#000",
@@ -208,7 +269,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     lineHeight: 16,
     paddingTop: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   frame61: {
     borderRadius: 26,
@@ -217,9 +278,9 @@ const styles = StyleSheet.create({
     left: -3,
     height: 60,
     width: 351,
-    marginTop:90,
-    marginLeft:30,
-    backgroundColor: "rgba(159,241,109,1)"
+    marginTop: 90,
+    marginLeft: 30,
+    backgroundColor: "rgba(159,241,109,1)",
   },
   pitcherPlantInSriLanka: {
     borderRadius: 26,
@@ -231,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 16,
-    marginLeft: 23
+    marginLeft: 23,
   },
 });
 
