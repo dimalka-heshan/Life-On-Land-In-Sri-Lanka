@@ -59,14 +59,11 @@ function Registration({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-        <TouchableOpacity onPress={() => navigation.navigate("AdminTabs")}>
           <Image
             source={require("../../assets/images/Screenshot1-removebg-preview.png")}
             resizeMode="contain"
             style={styles.image3}
           ></Image>
-        </TouchableOpacity>
-
         <Text style={styles.letsSaveTheWorld}>Let’s Save the World</Text>
         <Text
           style={styles.registerFromHereAndLetsSaveAndExploreTheWorldTogether}
