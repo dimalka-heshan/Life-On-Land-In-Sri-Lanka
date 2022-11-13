@@ -12,9 +12,11 @@ import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 function AdminForestDetails({ navigation }) {
   const route = useRoute();
+  const navigate = useNavigation();
 
   const [forest, setForest] = useState({} || null);
 
@@ -34,7 +36,7 @@ function AdminForestDetails({ navigation }) {
   useEffect(() => {
     axios
       .get(
-        `https://life-on-land-backend.azurewebsites.net/api/getAllPlantsInForest/${forest.forestId}`
+        `https://life-on-land-backend.azurewebsites.net/api/forest/adminGetAllPlants/${forest.forestId}`
       )
       .then((res) => {
         setAllPlants(res.data.plants);
@@ -174,51 +176,104 @@ function AdminForestDetails({ navigation }) {
                 contentContainerStyle={styles.scrollArea1_contentContainerStyle}
               >
                 <View style={styles.group1Row}>
-                  {allPlants.map((plant) => (
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("AdminPlantsDetails")}
-                    >
-                      <View style={styles.group1}>
-                        <View style={styles.rect2}>
-                          <Image
-                            source={require("../../../../assets/images/4ss1.jpg")}
-                            resizeMode="contain"
-                            style={styles.image1}
-                          ></Image>
-                          <Text style={styles.kariPlants1}>Kari Plants</Text>
-                          <View style={styles.icon1Row}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("AdminUpdatePlant")
-                              }
-                            >
-                              <FontAwesomeIcon
-                                name="edit"
-                                style={styles.icon1}
-                              ></FontAwesomeIcon>
-                            </TouchableOpacity>
-                            <MaterialCommunityIconsIcon
-                              name="delete"
-                              style={styles.icon2}
-                            ></MaterialCommunityIconsIcon>
+                  {allPlants
+                    .filter((plant) => plant.adminStatus === "Approved")
+                    .map((plant) => (
+                      <TouchableOpacity
+                        key={plant._id}
+                        onPress={() =>
+                          navigate.push("AdminPlantsDetails", {
+                            plantId: plant._id,
+                            plantName: plant.name,
+                            plantImage: plant.imageUrl,
+                            plantDetails: plant.details,
+                          })
+                        }
+                      >
+                        <View style={styles.group1}>
+                          <View style={styles.rect2}>
+                            <Image
+                              source={{ uri: plant.imageUrl }}
+                              resizeMode="contain"
+                              style={styles.image1}
+                            ></Image>
+                            <Text style={styles.animalName}>{plant.name}</Text>
+                            <View style={styles.icon1Row}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate("AdminUpdatePlant", {
+                                    plantId: plant._id,
+                                  })
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  name="edit"
+                                  style={styles.icon1}
+                                ></FontAwesomeIcon>
+                              </TouchableOpacity>
+                              <MaterialCommunityIconsIcon
+                                onPress={() => {
+                                  Alert.alert(
+                                    "Delete Plant",
+                                    "Are you sure you want to delete this plant?",
+                                    [
+                                      {
+                                        text: "Cancel",
+                                        onPress: () =>
+                                          console.log("Cancel Pressed"),
+                                        style: "cancel",
+                                      },
+                                      {
+                                        text: "OK",
+                                        onPress: () => {
+                                          axios
+                                            .delete(
+                                              `https://life-on-land-backend.azurewebsites.net/api/forest/deleteAnimalPlans/${plant._id}`
+                                            )
+                                            .then((res) => {
+                                              console.log(res);
+                                              alert(
+                                                "Plant deleted successfully"
+                                              );
+                                              //Refresh the page
+                                              navigate.push(
+                                                "AdminPlantsDetails"
+                                              );
+                                            })
+                                            .catch((err) => {
+                                              console.log(err);
+                                            });
+                                        },
+                                      },
+                                    ],
+                                    { cancelable: false }
+                                  );
+                                }}
+                                name="delete"
+                                style={styles.icon2}
+                              ></MaterialCommunityIconsIcon>
+                            </View>
                           </View>
                         </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
+                      </TouchableOpacity>
+                    ))}
                 </View>
               </ScrollView>
             </View>
             <TouchableOpacity
               style={[styles.containerbtn, styles.materialButtonViolet77]}
-              onPress={() => navigation.navigate("AdminAddPlantPage")}
+              onPress={() =>
+                navigation.navigate("AdminAddPlantPage", {
+                  forestId: forest.forestId,
+                })
+              }
             >
               <Text style={styles.addNewAnimals}>Add New Plant</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.containerbtn2, styles.materialButtonViolet7]}
               onPress={() =>
-                navigation.push("AdminPlantsApprovalList", {
+                navigate.push("AdminPlantsApprovalList", {
                   forestId: forest.forestId,
                 })
               }
@@ -260,7 +315,7 @@ function AdminForestDetails({ navigation }) {
                             <View style={styles.icon1Row}>
                               <TouchableOpacity
                                 onPress={() =>
-                                  navigation.push("AdminUpdateAnimal", {
+                                  navigate.push("AdminUpdateAnimal", {
                                     animalId: animal._id,
                                   })
                                 }
@@ -297,7 +352,7 @@ function AdminForestDetails({ navigation }) {
                                                 "Animal deleted successfully"
                                               );
                                               //Refresh the page
-                                              navigation.push(
+                                              navigate.push(
                                                 "AdminForestDetails"
                                               );
                                             })
@@ -332,7 +387,7 @@ function AdminForestDetails({ navigation }) {
             <TouchableOpacity
               style={[styles.containerbtn2, styles.materialButtonViolet7]}
               onPress={() =>
-                navigation.navigate("AdminAnimalApprovalList", {
+                navigate.navigate("AdminAnimalApprovalList", {
                   forestId: forest.forestId,
                 })
               }
@@ -405,21 +460,22 @@ const styles = StyleSheet.create({
   loremIpsum: {
     color: "rgba(62,62,62,1)",
     height: 1944,
-    width: 350,
+    width: "100%",
     fontSize: 18,
     marginTop: 15,
-    marginLeft: 40,
+    padding: 25,
   },
   loremIpsum2: {
     fontWeight: "bold",
-    top: 210,
+    top: 160,
     left: 30,
     position: "absolute",
     color: "#121212",
     fontSize: 20,
+    letterSpacing: 2,
   },
   imagefrst: {
-    top: 254,
+    top: 230,
     left: 48,
     width: 302,
     height: 203,

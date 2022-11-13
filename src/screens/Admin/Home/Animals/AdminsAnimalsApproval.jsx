@@ -10,9 +10,11 @@ import {
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 function AdminsAnimalsApproval(props) {
   const route = useRoute();
+  const navigate = useNavigation();
 
   const [animalId, setAnimalId] = useState({});
 
@@ -27,9 +29,6 @@ function AdminsAnimalsApproval(props) {
   }, [route.params.animalId]);
 
   //Update animal status
-  const [animalStatus, setAnimalStatus] = useState("");
-
-  //Update animal status
   const updateAnimalStatus = () => {
     axios
       .patch(
@@ -40,7 +39,9 @@ function AdminsAnimalsApproval(props) {
         Alert.alert("Success", "Animal approved successfully", [
           {
             text: "OK",
-            onPress: () => props.navigation.push("AdminAnimalApprovalList"),
+            onPress: () => {
+              navigate.push("AdminAnimalApprovalList");
+            },
           },
         ]);
       })
@@ -60,7 +61,9 @@ function AdminsAnimalsApproval(props) {
         Alert.alert("Reject", "Animal rejected successfully", [
           {
             text: "OK",
-            onPress: () => props.navigation.push("AdminAnimalApprovalList"),
+            onPress: () => {
+              navigate.push("AdminAnimalApprovalList");
+            },
           },
         ]);
       })

@@ -10,9 +10,11 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 function AdminUpdateAnimal(props) {
   const route = useRoute();
+  const navigate = useNavigation();
 
   const [animalId, setAnimalId] = useState({});
 
@@ -66,7 +68,7 @@ function AdminUpdateAnimal(props) {
         Alert.alert("Success", "Animal updated successfully", [
           {
             text: "OK",
-            onPress: () => props.navigation.push("AdminAnimalDetails"),
+            onPress: () => navigate.push("AdminAnimalDetails"),
           },
         ]);
       })

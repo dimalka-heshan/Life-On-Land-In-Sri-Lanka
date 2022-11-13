@@ -103,7 +103,7 @@ function AdminHomePage({ navigation }) {
                                       .then((res) => {
                                         console.log(res);
                                         alert("Forest deleted successfully");
-                                        navigation.navigate("AdminHomePage");
+                                        navigation.push("AdminHomePage");
                                       })
                                       .catch((err) => {
                                         console.log(err);
@@ -176,6 +176,8 @@ const styles = StyleSheet.create({
   group: {
     width: 172,
     height: 260,
+    marginTop: 10,
+    marginRight: 10,
   },
   rect: {
     width: 172,
@@ -285,10 +287,10 @@ const styles = StyleSheet.create({
   groupRow: {
     height: 260,
     flexDirection: "row",
+    flexWrap: "wrap",
     flex: 1,
-    marginRight: 29,
-    marginLeft: 30,
-    marginTop: 22,
+
+    marginLeft: 22,
   },
   backgroundStack: {
     backgroundColor: "white",

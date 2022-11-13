@@ -38,10 +38,6 @@ function AdminAddAnimalPage(props) {
       details: animalDetails,
       type: "Animal",
     };
-
-    console.log("====================================");
-    console.log(animal);
-    console.log("====================================");
     axios
       .post(
         `https://life-on-land-backend.azurewebsites.net/api/forest/createAnimalAndPlants/${forestId}`,
