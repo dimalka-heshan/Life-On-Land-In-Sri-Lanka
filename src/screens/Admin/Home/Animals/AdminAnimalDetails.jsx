@@ -1,17 +1,33 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 function AdminAnimalDetails(props) {
+  const route = useRoute();
+
+  const [animals, setAnimals] = useState({});
+
+  useEffect(() => {
+    const data = {
+      animalId: route.params.animalId,
+      animalName: route.params.animalName,
+      animalImage: route.params.animalImage,
+      animalDetails: route.params.animalDetails,
+    };
+    setAnimals(data);
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-            <View style={styles.frame61}>
-              <Text style={styles.pitcherPlantInSriLanka}>
-                Pitcher Animal in Sri Lanka
-              </Text>
-            </View>
+        <View style={styles.frame61}>
+          <Text style={styles.pitcherPlantInSriLanka}>
+            {animals.animalName}
+          </Text>
+        </View>
         <Image
-          source={require("../../../../assets/images/461931-landscape-samurai1.jpg")}
+          source={{ uri: animals.animalImage }}
           resizeMode="contain"
           style={styles.image}
         ></Image>
@@ -20,23 +36,7 @@ function AdminAnimalDetails(props) {
             contentContainerStyle={styles.scrollArea1_contentContainerStyle}
           >
             <View style={styles.rect1}>
-              <Text style={styles.loremIpsum1}>
-                The Leopard (Panthera pardus, Linnaeus, 1758) is the most
-                secretive and elusive of the large carnivores, and also the
-                shrewdest. Pound for pound, it is the strongest climber of the
-                larger cats and is capable of killing prey far larger than
-                itself. However, the leopard is the smallest member of the genus
-                Panthera, which includes the Lion, Tiger and Jaguar.
-                Historically, the leopard had a wide distribution across eastern
-                and southern Asia and Africa, from Siberia to South Africa, with
-                fragmented populations in the Indian subcontinent, Sri Lanka,
-                Indochina, Malaysia, Indonesia and China. Sadly, the range has
-                decreased radically due to over hunting and loss of
-                habitat.After Linnaeus published his description of leopards
-                in the Systema Naturae in 1758, as many as 27 subspecies of
-                leopards were described within a period of 162 years (1794 to
-                1956), by various scientists.
-              </Text>
+              <Text style={styles.loremIpsum1}>{animals.animalDetails}</Text>
             </View>
           </ScrollView>
         </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame6: {
     borderRadius: 26,
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.15)",
     shadowOffset: {
       height: 27,
-      width: 0
+      width: 0,
     },
     shadowRadius: 70.56399536132812,
     shadowOpacity: 1,
-    backgroundColor: "rgba(159,241,109,1)"
+    backgroundColor: "rgba(159,241,109,1)",
   },
   frame6ClippingMask: {
     position: "absolute",
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame61: {
     borderRadius: 26,
@@ -92,9 +92,9 @@ const styles = StyleSheet.create({
     left: 0,
     height: 64,
     width: 351,
-    marginTop:69,
-    marginLeft:30,
-    backgroundColor: "rgba(159,241,109,1)"
+    marginTop: 69,
+    marginLeft: 30,
+    backgroundColor: "rgba(159,241,109,1)",
   },
   pitcherPlantInSriLanka: {
     borderRadius: 26,
@@ -106,12 +106,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 17,
-    marginLeft: 23
+    marginLeft: 23,
   },
   frame6ClippingMaskStack: {
     width: 351,
     height: 64,
-    backgroundColor:"rgba(159,241,109,1)"
+    backgroundColor: "rgba(159,241,109,1)",
   },
   image: {
     top: 158,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     width: 349,
     height: 237,
     position: "absolute",
-    borderRadius: 38
+    borderRadius: 38,
   },
   scrollArea1: {
     top: 404,
@@ -127,11 +127,11 @@ const styles = StyleSheet.create({
     width: 414,
     height: 492,
     position: "absolute",
-    backgroundColor: "rgba(255,255,255,1)"
+    backgroundColor: "rgba(255,255,255,1)",
   },
   scrollArea1_contentContainerStyle: {
     height: 1452,
-    width: 414
+    width: 414,
   },
   rect1: {
     width: 365,
@@ -140,27 +140,27 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(155,155,155,1)",
     shadowOffset: {
       width: 3,
-      height: 3
+      height: 3,
     },
     elevation: 90,
     shadowOpacity: 1,
     shadowRadius: 30,
     borderRadius: 25,
     marginTop: 27,
-    marginLeft: 28
+    marginLeft: 28,
   },
   loremIpsum1: {
     color: "#121212",
     height: 1396,
     width: 326,
     marginTop: 18,
-    marginLeft: 18
+    marginLeft: 18,
   },
   backgroundStack: {
     backgroundColor: "white",
     width: 414,
-    height: 896
-  }
+    height: 896,
+  },
 });
 
 export default AdminAnimalDetails;

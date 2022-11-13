@@ -1,37 +1,150 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { Component, useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 
 function AddOrganizationPage(props) {
+  const [orgName, setorgName] = useState("");
+  const [orgCountry, setorgCountry] = useState("");
+  const [orgDescription, setorgDescription] = useState("");
+  const [orgContactNo, setorgContactNo] = useState("");
+  const [orgEmail, setorgEmail] = useState("");
+  const [image, setImage] = useState();
+  const [savedImg, setSavedImg] = useState("");
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  //Add the image to the cloudinary in react native
+
+  let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/desnqqj6a/upload";
+  const cloudinaryImage = async () => {
+    let data = new FormData();
+    data.append("file", {
+      uri: image,
+      type: "image/jpeg",
+      name: "testImage",
+    });
+    data.append("upload_preset", "GlobalEducation");
+    data.append("cloud_name", "desnqqj6a");
+    data.append("api_key", "143713375849926");
+    data.append("api_secret", "6y1DW0yzKArCCQj8IWCZhv7FB5M");
+
+    fetch(CLOUDINARY_URL, {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.url);
+        setSavedImg(data.url);
+
+        //Post method to send image to backend
+        AddOrganization(data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert("Something went wrong");
+      });
+  };
+
+  const AddOrganization = async (ImageURL) => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (
+      orgName == "" ||
+      orgCountry == "" ||
+      orgDescription == "" ||
+      orgContactNo == "" ||
+      orgEmail == ""
+    ) {
+      Alert.alert("Error", "Please fill all the fields", [{ text: "OK" }]);
+    } else {
+      await axios
+        .post(
+          "https://life-on-land-backend.azurewebsites.net/api/organization/createOrg",
+          {
+            orgName: orgName,
+            orgCountry: orgCountry,
+            orgDescription: orgDescription,
+            orgContactNo: orgContactNo,
+            orgEmail: orgEmail,
+            orgLogo: ImageURL,
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((res) => {
+          Alert.alert("Success", "Organization added successfully", [
+            {
+              text: "OK",
+              onPress: () => props.navigation.push("OrganizationPage"),
+            },
+          ]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-      <View style={styles.frame61}>
-              <Text style={styles.sriLankanLeopard}>Register Organization</Text>
+        <View style={styles.frame61}>
+          <Text style={styles.sriLankanLeopard}>Register Organization</Text>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox17]}>
           <TextInput
             placeholder="Enter Organization Name"
             style={styles.inputStyle}
+            onChangeText={(text) => setorgName(text)}
           ></TextInput>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox24]}>
           <TextInput
             placeholder="Enter Organization Email"
             style={styles.inputStyle}
+            onChangeText={(text) => setorgEmail(text)}
           ></TextInput>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox25]}>
           <TextInput
             placeholder="Enter Organization Contact Number"
             style={styles.inputStyle}
+            onChangeText={(text) => setorgContactNo(text)}
           ></TextInput>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox26]}>
           <TextInput
             placeholder="Enter Organization Country"
             style={styles.inputStyle}
+            onChangeText={(text) => setorgCountry(text)}
           ></TextInput>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox27]}>
@@ -40,17 +153,26 @@ function AddOrganizationPage(props) {
             multiline={true}
             numberOfLines={10}
             style={styles.inputStyle}
+            onChangeText={(text) => setorgDescription(text)}
           ></TextInput>
         </View>
         <View style={[styles.containertxt, styles.materialUnderlineTextbox28]}>
           <TextInput
-            placeholder="Choose Organization Logo"
+            value={image ? "Image Selected" : "Choose Image"}
             style={styles.inputStyle}
+            editable={false}
+            selectTextOnFocus={false}
           ></TextInput>
         </View>
-        <Icon name="plus-circle" style={styles.icon1}></Icon>
-        <TouchableOpacity style={[styles.containerbtn, styles.materialButtonViolet18]}>
-          <Text style={styles.addOrganization}>Add Organization</Text>
+        <TouchableOpacity onPress={pickImage}>
+          <Icon name="plus-circle" style={styles.icon1}></Icon>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.containerbtn, styles.materialButtonViolet18]}
+        >
+          <Text style={styles.addOrganization} onPress={cloudinaryImage}>
+            Add Organization
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -59,9 +181,9 @@ function AddOrganizationPage(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: -10,
+    marginLeft: -11,
     backgroundColor: "rgba(0,0,0,0)",
-    flex: 1
+    flex: 1,
   },
   containerbtn: {
     backgroundColor: "#3F51B5",
@@ -72,14 +194,14 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.35,
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   frame61: {
     position: "absolute",
@@ -88,10 +210,10 @@ const styles = StyleSheet.create({
     left: 33,
     height: 55,
     width: 351,
-    backgroundColor: "rgba(184,233,134,1)"
+    backgroundColor: "rgba(184,233,134,1)",
   },
   sriLankanLeopard: {
-    fontWeight:"bold",
+    fontWeight: "bold",
     height: 25,
     width: 305,
     backgroundColor: "transparent",
@@ -99,7 +221,7 @@ const styles = StyleSheet.create({
     color: "rgba(48,64,34,1)",
     fontSize: 20,
     marginTop: 13,
-    marginLeft: 23
+    marginLeft: 23,
   },
   addOrganization: {
     color: "#fff",
@@ -110,8 +232,8 @@ const styles = StyleSheet.create({
     borderColor: "#D9D5DC",
     backgroundColor: "transparent",
     flexDirection: "row",
-    marginTop:-28,
-    alignItems: "center"
+    marginTop: -28,
+    alignItems: "center",
   },
   inputStyle: {
     color: "#000",
@@ -123,7 +245,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     lineHeight: 16,
     paddingTop: 9,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   background: {
     position: "absolute",
@@ -132,7 +254,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderColor: "transparent",
     left: 0,
-    top: 0
+    top: 0,
   },
   frame5: {
     position: "absolute",
@@ -143,10 +265,10 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0,0,0,0.15)",
     shadowOffset: {
       height: 27,
-      width: 0
+      width: 0,
     },
     shadowRadius: 70.56399536132812,
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
   frame5ClippingMask: {
     position: "absolute",
@@ -155,14 +277,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "transparent",
-    borderColor: "transparent"
+    borderColor: "transparent",
   },
   frame51: {
     position: "absolute",
     top: 0,
     left: 0,
     height: 64,
-    width: 351
+    width: 351,
   },
   registerOrganization: {
     height: 52,
@@ -172,11 +294,11 @@ const styles = StyleSheet.create({
     color: "rgba(0,0,0,1)",
     fontSize: 18,
     marginTop: 22,
-    marginLeft: 16
+    marginLeft: 16,
   },
   frame5ClippingMaskStack: {
     width: 351,
-    height: 64
+    height: 64,
   },
   materialUnderlineTextbox17: {
     height: 43,
@@ -186,7 +308,7 @@ const styles = StyleSheet.create({
     top: 204,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 25
+    borderRadius: 25,
   },
   materialUnderlineTextbox24: {
     height: 43,
@@ -196,7 +318,7 @@ const styles = StyleSheet.create({
     top: 264,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 48
+    borderRadius: 48,
   },
   materialUnderlineTextbox25: {
     height: 43,
@@ -206,7 +328,7 @@ const styles = StyleSheet.create({
     top: 325,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 35
+    borderRadius: 35,
   },
   materialUnderlineTextbox26: {
     height: 43,
@@ -216,17 +338,17 @@ const styles = StyleSheet.create({
     top: 392,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 35
+    borderRadius: 35,
   },
   materialUnderlineTextbox27: {
     height: 113,
-    width: 353,
+    width: 351,
     position: "absolute",
     left: 33,
     top: 457,
     borderRadius: 23,
     borderWidth: 2,
-    borderColor: "rgba(65,117,5,1)"
+    borderColor: "rgba(65,117,5,1)",
   },
   materialUnderlineTextbox28: {
     height: 50,
@@ -236,14 +358,14 @@ const styles = StyleSheet.create({
     top: 597,
     borderWidth: 2,
     borderColor: "rgba(65,117,5,1)",
-    borderRadius: 100
+    borderRadius: 100,
   },
   icon1: {
     top: 574,
     left: 340,
     position: "absolute",
     color: "rgba(34,139,34,1)",
-    fontSize: 40
+    fontSize: 40,
   },
   materialButtonViolet18: {
     height: 60,
@@ -252,12 +374,12 @@ const styles = StyleSheet.create({
     left: 25,
     top: 645,
     backgroundColor: "rgba(65,117,5,1)",
-    borderRadius: 31
+    borderRadius: 31,
   },
   backgroundStack: {
     width: 414,
-    height: 896
-  }
+    height: 896,
+  },
 });
 
 export default AddOrganizationPage;

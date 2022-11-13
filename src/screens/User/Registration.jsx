@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Alert,
 } from "react-native";
 import axios from "axios";
 
@@ -24,11 +25,12 @@ function Registration({ navigation }) {
       password === "" ||
       confirmPassword === ""
     ) {
-      alert("Please fill all the fields!");
+      // alert("Please fill all the fields!");
+      Alert.alert("Error", "Please fill all the fields!");
     } else if (password !== confirmPassword) {
-      alert("Password does not match!");
+      Alert.alert("Error", "Password does not match!");
     } else if (password.length < 6) {
-      alert("Password must be at least 6 characters!");
+      Alert.alert("Error", "Password must be at least 6 characters!");
     } else {
       try {
         const user = {
@@ -43,9 +45,15 @@ function Registration({ navigation }) {
             user
           )
           .then((res) => {
-            if (res.data.success) {
-              alert("Registration Successful");
-              navigation.navigate("Login");
+            if (res.data.status) {
+              Alert.alert("Success", "Registration Successful", [
+                {
+                  text: "Okay",
+                  onPress: () => {
+                    navigation.push("Login");
+                  },
+                },
+              ]);
             } else {
               alert(res.data.message);
             }
@@ -59,14 +67,11 @@ function Registration({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundStack}>
-        <TouchableOpacity onPress={() => navigation.navigate("AdminTabs")}>
           <Image
             source={require("../../assets/images/Screenshot1-removebg-preview.png")}
             resizeMode="contain"
             style={styles.image3}
           ></Image>
-        </TouchableOpacity>
-
         <Text style={styles.letsSaveTheWorld}>Let’s Save the World</Text>
         <Text
           style={styles.registerFromHereAndLetsSaveAndExploreTheWorldTogether}
@@ -121,7 +126,7 @@ function Registration({ navigation }) {
         <View>
           <View>
             <Text
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.push("Login")}
               style={styles.signUp}
             >
               Sign In
