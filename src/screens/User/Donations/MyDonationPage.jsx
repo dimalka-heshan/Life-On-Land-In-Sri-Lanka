@@ -315,7 +315,8 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     marginTop: 3,
   },
-  icon5Row: {
+
+  icon3Row: {
     height: 19,
     flexDirection: "row",
     marginTop: 4,

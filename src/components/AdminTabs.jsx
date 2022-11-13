@@ -26,16 +26,20 @@ import AdminOrganization from "../screens/Admin/Organization/AdminOrganization";
 import AdminAddOrganizationPage from '../screens/Admin/Organization/AdminAddOrganizationPage';
 import AdminSpecificOrgPage from '../screens/Admin/Organization/AdminSpecificOrgPage';
 
-
 import AdminProfile from "../screens/Admin/Profile/AdminProfile";
 import UpdateAdminProfile from '../screens/Admin/Profile/UpdateAdminProfile';
 
-import AdminBlogsAndNews from '../screens/Admin/BlogsAndNews/AdminBlogsAndNews';
-import AdminDonations from '../screens/Admin/Donations/AdminDonations'
+import AdminBlogs from '../screens/Admin/BlogsAndNews/AdminBlogs';
+import AdminSpecificBlog from '../screens/Admin/BlogsAndNews/AdminSpecificBlog';
+
+import AdminNews from '../screens/Admin/News/AdminNews';
+import AdminSpecificNews from '../screens/Admin/News/AdminSpecificNews';
 
 const HomeStack = createNativeStackNavigator();
 const OrganizationStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+const NewsStack = createNativeStackNavigator();
+const BlogsStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -188,14 +192,49 @@ function HomeStackScreen() {
             headerShown: false,
         }}
       />  
-      {/* <OrganizationStack.Screen 
-        name="UpdateOrganizationPage" 
-        component={UpdateOrganizationPage}           
+    </OrganizationStack.Navigator>
+   );
+ }
+
+ function NewsStackScreen() {
+  return (
+    <NewsStack.Navigator>
+     <NewsStack.Screen 
+        name="AdminNews" 
+        component={AdminNews}           
         options={{
             headerShown: false,
         }}
-      />     */}
-    </OrganizationStack.Navigator>
+      /> 
+      <NewsStack.Screen 
+        name="AdminSpecificNews" 
+        component={AdminSpecificNews}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+    </NewsStack.Navigator>
+   );
+ }
+
+ function BlogsStackScreen() {
+  return (
+    <BlogsStack.Navigator>
+     <BlogsStack.Screen 
+        name="AdminBlogs" 
+        component={AdminBlogs}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+      <BlogsStack.Screen 
+        name="AdminSpecificBlog" 
+        component={AdminSpecificBlog}           
+        options={{
+            headerShown: false,
+        }}
+      /> 
+    </BlogsStack.Navigator>
    );
  }
 
@@ -237,8 +276,8 @@ function AdminTabs() {
         }}
       />
       <Tab.Screen 
-        name="BlogsAndNews" 
-        component={AdminBlogsAndNews} 
+        name="BlogsStackScreen" 
+        component={BlogsStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
@@ -276,8 +315,8 @@ function AdminTabs() {
       />
             
       <Tab.Screen 
-        name="Donations" 
-        component={AdminDonations} 
+        name="NewsStackScreen" 
+        component={NewsStackScreen} 
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{
